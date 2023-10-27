@@ -14,7 +14,8 @@ As the configuration envolves input from user, it needs a TTY. However, after co
 docker container run --name Q1-frpc -it --network host registry.quant1.com.br/arthur/q1-frpc/main
 ```
 
-At the end, it'll output a url you can use globally.
+At the end, it'll output a url you can use globally.  
+This url is achieved by applying a md5sum to your Q1 username and appending .cloud.quant1.com.br to it.
 
 ### Stop/starting it
 

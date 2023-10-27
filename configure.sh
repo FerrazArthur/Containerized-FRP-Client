@@ -42,7 +42,8 @@ create_config_file(){
     read local_port_value
     local_port_value="${local_port_value:-3000}"
 
-    custom_domain=$( echo -n "$1" | md5sum | awk '{print "[\""$1".cloud.quant1.com.br\"]"}' )
+    #custom_domain=$( echo -n "$1" | md5sum | awk '{print $1".cloud.quant1.com.br"}' )
+    custom_domain="test.frp.quant1.com.br"
 
     awk -v addr_field="serverAddr" -v port_field="serverPort" \
         -v addr_value="\"""$serverAddr""\"" -v port_value="$serverPort" \
@@ -50,7 +51,7 @@ create_config_file(){
         -v type_field="type" -v type_value="\"""$type_value""\"" \
         -v local_port_field="localPort" -v local_port_value="$local_port_value" \
         -v ip_field="localIp" -v ip_value="\"""$ip_value""\"" \
-        -v dom_field="customDomains" -v dom_value="$custom_domain" \
+        -v dom_field="customDomains" -v dom_value="[\"""$custom_domain""\"]" \
         'BEGIN { FS = " *= *"; OFS = " = " } \
         $1 == addr_field { $2 = addr_value } \
         $1 == port_field { $2 = port_value } \
@@ -62,9 +63,9 @@ create_config_file(){
         { print }' "frpc.toml" > temp && mv temp "$1_client.toml"
     awk '!/^remotePort/' "$1_client.toml" > temp && mv temp "$1_client.toml"
     
+    echo "$1"
     echo "Configuration Done! you can enjoy globally acess to you localserver in the url:"
     echo "$custom_domain"
-    echo "(That's made from applying a md5sum hash to your username and appending .cloud.quant1.com.br to it)"
 }
 
 autenticate "$1"
