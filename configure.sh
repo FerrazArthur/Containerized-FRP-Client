@@ -10,8 +10,9 @@ autenticate(){
         exit 1
     fi
 
+    echo "Insira a senha: "
     # Try to authenticate user
-    ldapwhoami -x -W -H ldap://ldap.quant1.com.br:389 -D "cn=$1,ou=users,dc=ldap,dc=quant1,dc=com,dc=br"
+    ldapwhoami -x -W -H ldap://ldap.quant1.com.br:389 -D "cn=$1,ou=users,dc=ldap,dc=quant1,dc=com,dc=br" > /dev/null
 
     OUTPUT="$?"
 
@@ -44,7 +45,7 @@ create_config_file(){
 
     #custom_domain=$( echo -n "$1" | md5sum | awk '{print "[\""$1".cloud.quant1.com.br\"]"}' )
     custom_domain="[\"test.frp.quant1.com.br\"]"
-    echo "$custom_domain"
+
     awk -v addr_field="serverAddr" -v port_field="serverPort" \
         -v addr_value="\"""$serverAddr""\"" -v port_value="$serverPort" \
         -v name_field="name" -v name_value="\"""$name_value""\"" \
@@ -62,6 +63,8 @@ create_config_file(){
         /^localPort/ { print dom_field " = " dom_value }
         { print }' "frpc.toml" > temp && mv temp "$1_client.toml"
     awk '!/^remotePort/' "$1_client.toml" > temp && mv temp "$1_client.toml"
+    
+    export USER="$1"
 }
 
 start_server(){
