@@ -11,7 +11,7 @@ As the configuration envolves input from user, it needs a TTY. However, after co
 ### Creating the container
 
 ```bash
-docker container run --name Q1-frpc -it --network host registry.quant1.com.br/arthur/q1-frpc/main
+docker container run --name Q1-frpc -it --network host registry.quant1.com.br/arthur/q1-frpc
 ```
 
 At the end, it'll output a url you can use globally.  
