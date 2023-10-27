@@ -4,10 +4,28 @@ Project aims to provide containers image that allows quant1 devs to enable perso
 
 ## Usage
 
-You can configure and start your frpc with the image provided with this repo and the command:
+The container use described below is intended to be configured once and then it can be stopped / started on demand.
+
+As the configuration envolves input from user, it needs a TTY. However, after configuring you can stop it and restart, it should work fine as detached.
+
+### Creating the container
 
 ```bash
-docker container run --rm -it --network host registry.quant1.com.br/arthur/q1-frpc/main <your q1 login>
+docker container run --name Q1-frpc -it --network host registry.quant1.com.br/arthur/q1-frpc/main
 ```
 
-Then proceed to configure the client.
+At the end, it'll output a url you can use globally.
+
+### Stop/starting it
+
+To stop the execution
+
+```bash
+docker container stop Q1-frpc
+```
+
+To restart the execution
+
+```bash
+docker container start Q1-frpc
+```

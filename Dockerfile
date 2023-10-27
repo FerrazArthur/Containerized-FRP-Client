@@ -10,9 +10,10 @@ RUN wget https://github.com/fatedier/frp/releases/download/v"$VERSION"/frp_"$VER
 
 WORKDIR frp_"$VERSION"_"$OS"_"$ARCH"
 
-COPY configure.sh /frp_"$VERSION"_"$OS"_"$ARCH"
+COPY *.sh /frp_"$VERSION"_"$OS"_"$ARCH"
 
-RUN chmod 755 frpc configure.sh && mv frpc /bin
+RUN chmod 755 frpc *.sh && mv frpc /bin
 
-ENTRYPOINT [ "./configure.sh" ]
+ENTRYPOINT [ "sh" ]
 
+CMD [ "./main.sh" ]

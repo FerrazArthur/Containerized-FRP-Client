@@ -10,7 +10,6 @@ autenticate(){
         exit 1
     fi
 
-    echo "Insira a senha: "
     # Try to authenticate user
     ldapwhoami -x -W -H ldap://ldap.quant1.com.br:389 -D "cn=$1,ou=users,dc=ldap,dc=quant1,dc=com,dc=br" > /dev/null
 
@@ -43,8 +42,7 @@ create_config_file(){
     read local_port_value
     local_port_value="${local_port_value:-3000}"
 
-    #custom_domain=$( echo -n "$1" | md5sum | awk '{print "[\""$1".cloud.quant1.com.br\"]"}' )
-    custom_domain="[\"test.frp.quant1.com.br\"]"
+    custom_domain=$( echo -n "$1" | md5sum | awk '{print "[\""$1".cloud.quant1.com.br\"]"}' )
 
     awk -v addr_field="serverAddr" -v port_field="serverPort" \
         -v addr_value="\"""$serverAddr""\"" -v port_value="$serverPort" \
@@ -64,19 +62,10 @@ create_config_file(){
         { print }' "frpc.toml" > temp && mv temp "$1_client.toml"
     awk '!/^remotePort/' "$1_client.toml" > temp && mv temp "$1_client.toml"
     
-    export USER="$1"
+    echo "Configuration Done! you can enjoy globally acess to you localserver in the url:"
+    echo "$custom_domain"
+    echo "(That's made from applying a md5sum hash to your username and appending .cloud.quant1.com.br to it)"
 }
 
-start_server(){
-    echo "Iniciando cliente FRP..."
-
-    frpc -c "$1_client.toml"
-}
 autenticate "$1"
-
-# Create config file if it doesnt already exists
-if [ ! -f "$1_client.toml" ]; then
-    create_config_file "$1"
-fi
-
-start_server "$1"
+create_config_file "$1"
