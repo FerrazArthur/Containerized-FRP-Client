@@ -3,17 +3,22 @@
 # Search for a configfile
 conf=$( find . -type f -name '*_client.toml' )
 
+# If config file already exists
 if [ -n "$conf" ]; then
-    # Split the username from the file.
-    USER="${conf%'_client.toml'}"
+    # If QUANT1_USER is not already set as a environment variable
+    if [ -z "$QUANT1_USER" ]; then
+        QUANT1_USER="${conf%'_client.toml'}"
+    fi
 else
-    # If it doesnt find then it's the first execution and we configure the client
-    echo "Insira o usuário quant1:"
-    read -r USER
-    ./configure.sh "$USER"
+    # It's the first execution and we configure the client
+    
+    # If QUANT1_USER is not already set as a environment variable
+    if [ -z "$QUANT1_USER" ]; then
+        echo "Insira o usuário quant1:"
+        read -r QUANT1_USER
+    fi
+    ./configure.sh "$QUANT1_USER"
 fi
-
-export USER
 
 OUTPUT="$?"
 
@@ -22,4 +27,4 @@ if [ "$OUTPUT" != "0" ]; then
     exit 1
 fi
 
-./start.sh
+./start.sh "$QUANT1_USER"

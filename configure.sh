@@ -1,11 +1,13 @@
 #!/bin/sh
 
-serverAddr="194.163.176.185"
-serverPort="7000"
+# Check if environment server addr is set. If not, default it
+SERVER_ADDR="${SERVER_ADDR:-194.163.176.185}"
+
+SERVER_PORT="${SERVER_PORT:-7000}"
 
 autenticate(){
     # Verify if argument is passed
-    if [ "$1" == "" ]; then
+    if [ -z "$1" ]; then
         echo "Erro: É esperado um nome de usuário Quant1 como argumento."
         exit 1
     fi
@@ -46,7 +48,7 @@ create_config_file(){
     custom_domain="test.frp.quant1.com.br"
 
     awk -v addr_field="serverAddr" -v port_field="serverPort" \
-        -v addr_value="\"""$serverAddr""\"" -v port_value="$serverPort" \
+        -v addr_value="\"""$SERVER_ADDR""\"" -v port_value="$SERVER_PORT" \
         -v name_field="name" -v name_value="\"""$name_value""\"" \
         -v type_field="type" -v type_value="\"""$type_value""\"" \
         -v local_port_field="localPort" -v local_port_value="$local_port_value" \

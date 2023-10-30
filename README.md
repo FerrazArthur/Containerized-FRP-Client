@@ -4,9 +4,10 @@ Project aims to provide containers image that allows quant1 devs to enable perso
 
 ## Usage
 
-The container use described below is intended to be configured once and then it can be stopped / started on demand.
+The intended use of the container described below is to configure it once, and then it can be started or stopped as needed.  
 
-As the configuration envolves input from user, it needs a TTY. However, after configuring you can stop it and restart, it should work fine as detached.
+Since the configuration requires user input, a TTY is necessary.  
+However, after the initial configuration, you can stop it and then restart it, and it should function properly in a detached state.
 
 ### Creating the container
 
@@ -14,8 +15,7 @@ As the configuration envolves input from user, it needs a TTY. However, after co
 docker container run --name Q1-frpc -it --network host registry.quant1.com.br/arthur/q1-frpc
 ```
 
-At the end, it'll output a url you can use globally.  
-This url is achieved by applying a md5sum to your Q1 username and appending .cloud.quant1.com.br to it.
+At the end, it will generate a URL that can be used globally. This URL is obtained by applying an md5sum to your Q1 username and appending ".cloud.quant1.com.br" to it.
 
 ### Stop/starting it
 
