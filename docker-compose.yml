@@ -10,4 +10,4 @@ services:
         stdin_open: true
         tty: true
         network_mode: host
-        image: registry.quant1.com.br/arthur/quant1-frp
+        image: registry.quant1.com.br/arthur/quant1-frpc
