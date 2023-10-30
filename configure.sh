@@ -47,8 +47,8 @@ create_config_file(){
     #custom_domain=$( echo -n "$1" | md5sum | awk '{print $1".cloud.quant1.com.br"}' )
     custom_domain="test.frp.quant1.com.br"
 
-    awk -v addr_field="serverAddr" -v port_field="serverPort" \
-        -v addr_value="\"""$SERVER_ADDR""\"" -v port_value="$SERVER_PORT" \
+    awk -v addr_field="serverAddr" -v addr_value="\"""$SERVER_ADDR""\"" \
+        -v port_field="serverPort" -v port_value="$SERVER_PORT" \
         -v name_field="name" -v name_value="\"""$name_value""\"" \
         -v type_field="type" -v type_value="\"""$type_value""\"" \
         -v local_port_field="localPort" -v local_port_value="$local_port_value" \

@@ -1,4 +1,4 @@
-# Q1-FRPC
+# Quant1-FRPC
 
 Project aims to provide containers image that allows quant1 devs to enable personalized reverse proxy locally and share their applications globally, via quant1's FRP server.
 
