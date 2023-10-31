@@ -1,9 +1,9 @@
 #!/bin/sh
 
 start_server(){
-    echo "Iniciando cliente FRP..."
+    printf "Iniciando cliente FRP...\n"
     if [ -z "$1" ]; then
-        echo "Erro: Usuário não definido. Por favorn certifique-se de que o container foi configurado corretamente."
+        printf "Erro: Usuário não definido. Por favor, certifique-se de que o container foi configurado corretamente.\n"
         exit 1
     fi
     frpc -c "$1_client.toml"

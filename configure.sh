@@ -8,7 +8,7 @@ SERVER_PORT="${SERVER_PORT:-7000}"
 autenticate(){
     # Verify if argument is passed
     if [ -z "$1" ]; then
-        echo "Erro: É esperado um nome de usuário Quant1 como argumento."
+        printf "Erro: É esperado um nome de usuário Quant1 como argumento.\n"
         exit 1
     fi
 
@@ -18,33 +18,31 @@ autenticate(){
     OUTPUT="$?"
 
     if [ "$OUTPUT" != "0" ]; then
-        echo "Erro: Usuário \"""$1""\" não foi devidamente autentificado."
+        printf "Erro: Usuário \"""$1""\" não foi devidamente autentificado.\n"
         exit 1
     else
-        echo "Usuário autenticado com sucesso!"
+        printf "Usuário autenticado com sucesso!\n"
     fi
 }
 # Personalize client proxi file
 
 create_config_file(){
     # Setup frp server address
-    echo "Insira um nome para o proxy ("$1"-proxy)"
-    read name_value
+    read -p "Insira um nome para o proxy ["$1"-proxy]: " name_value 
     name_value="${name_value:-$1_proxy}" # If empty, assert default value
 
-    echo "Insira o tipo de conexão (http)"
-    read type_value
+    read -p "Insira o tipo de conexão [http]: " type_value
     type_value="${type_value:-http}"
 
-    echo "Insira o ip local (127.0.0.1)"
-    read ip_value
+    
+    read -p "Insira o ip local [127.0.0.1]: " ip_value
     ip_value="${ip_value:-127.0.0.1}"
 
-    echo "Insira a porta local (3000)"
-    read local_port_value
+    
+    read -p "Insira a porta local [3000]: " local_port_value
     local_port_value="${local_port_value:-3000}"
 
-    #custom_domain=$( echo -n "$1" | md5sum | awk '{print $1".cloud.quant1.com.br"}' )
+    #custom_domain=$( printf "$1" | md5sum | awk '{print $1".cloud.quant1.com.br"}' )
     custom_domain="test.frp.quant1.com.br"
 
     awk -v addr_field="serverAddr" -v addr_value="\"""$SERVER_ADDR""\"" \
@@ -65,9 +63,7 @@ create_config_file(){
         { print }' "frpc.toml" > temp && mv temp "$1_client.toml"
     awk '!/^remotePort/' "$1_client.toml" > temp && mv temp "$1_client.toml"
     
-    echo "$1"
-    echo "Configuration Done! you can enjoy globally acess to you localserver in the url:"
-    echo "$custom_domain"
+    printf "Configuration Done! you can enjoy globally acess to you localserver in the url:\n""$custom_domain""\n\n"
 }
 
 autenticate "$1"

@@ -11,11 +11,9 @@ if [ -n "$conf" ]; then
     fi
 else
     # It's the first execution and we configure the client
-    
     # If QUANT1_USER is not already set as a environment variable
     if [ -z "$QUANT1_USER" ]; then
-        echo "Insira o usuário quant1:"
-        read -r QUANT1_USER
+        read -p "Insira o usuário quant1: " QUANT1_USER
     fi
     ./configure.sh "$QUANT1_USER"
 fi
@@ -23,7 +21,7 @@ fi
 OUTPUT="$?"
 
 if [ "$OUTPUT" != "0" ]; then
-    echo "Não foi possível executar o cliente frp."
+    printf "Não foi possível executar o cliente frp.\n"
     exit 1
 fi
   
