@@ -1,18 +1,32 @@
-FROM alpine
+ARG ALPINE_VERSION=3.18.4
 
-ARG VERSION=0.52.3
+ARG FRP_VERSION=0.52.3
+
+# First step: install frp
+FROM alpine:"$ALPINE_VERSION" AS installer
+
+ARG FRP_VERSION
 ARG OS=linux
 ARG ARCH=amd64
 
-RUN apk add wget tar openldap-clients
+RUN apk add --no-cache wget tar 
 
-RUN wget https://github.com/fatedier/frp/releases/download/v"$VERSION"/frp_"$VERSION"_"$OS"_"$ARCH".tar.gz && tar xvf frp_"$VERSION"_"$OS"_"$ARCH".tar.gz && cd frp_"$VERSION"_"$OS"_"$ARCH" && rm frps frps.toml LICENSE
+RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && tar xvf frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && mv frp_"$FRP_VERSION"_"$OS"_"$ARCH" frp && cd frp && rm frps frps.toml LICENSE
 
-WORKDIR frp_"$VERSION"_"$OS"_"$ARCH"
+# Final image
+FROM alpine:"$ALPINE_VERSION"
 
-COPY *.sh /frp_"$VERSION"_"$OS"_"$ARCH"
+RUN apk add --no-cache openldap-clients && addgroup -S -g 10001 quant1_group && adduser -SH -u 10001 -G quant1_group quant1_frp_client
 
-RUN chmod 755 frpc *.sh && mv frpc /bin
+COPY --from=installer /frp/ /frp/
+
+COPY *.sh /frp/
+
+WORKDIR /frp/
+
+RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc *.sh && mv frpc /bin 
+
+USER quant1_frp_client
 
 ENTRYPOINT [ "sh" ]
 

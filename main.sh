@@ -26,5 +26,5 @@ if [ "$OUTPUT" != "0" ]; then
     echo "Não foi possível executar o cliente frp."
     exit 1
 fi
-
+  
 ./start.sh "$QUANT1_USER"
