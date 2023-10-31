@@ -2,10 +2,10 @@ version: '3.3'
 services:
     quant1-frp-client:
         image: registry.quant1.com.br/arthur/quant1-frpc
-        user: 'quant1_frp_client:quant1_group'
         environment:
             - SERVER_ADDR=194.163.176.185
             - SERVER_PORT=7000
+            - QUANT1_USER="arthur"
         container_name: Quant1-frpc
         tty: true
         stdin_open: true
