@@ -9,5 +9,4 @@ start_server(){
     frpc -c "$1_client.toml"
 }
 
-
 start_server "$1"

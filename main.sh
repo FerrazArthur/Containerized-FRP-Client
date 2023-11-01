@@ -13,9 +13,9 @@ else
     # It's the first execution and we configure the client
     # If QUANT1_USER is not already set as a environment variable
     if [ -z "$QUANT1_USER" ]; then
-        read -p "Insira o usuário quant1: " QUANT1_USER
+        read -r -p "Insira o usuário quant1: " QUANT1_USER
     fi
-    ./configure.sh "$QUANT1_USER"
+    ./configure.sh "$QUANT1_USER" "$1"
 fi
 
 OUTPUT="$?"

@@ -30,4 +30,4 @@ USER quant1_frp_client
 
 ENTRYPOINT [ "sh" ]
 
-CMD [ "./main.sh" ]
+CMD [ "-c", "./input_provider.sh | ./main.sh non-interactive" ]

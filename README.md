@@ -1,32 +1,23 @@
 # Quant1-FRPC
 
-Project aims to provide containers image that allows quant1 devs to enable personalized reverse proxy locally and share their applications globally, via quant1's FRP server.
+This project provides a Docker container image that allows Quant1 developers to enable a personalized reverse proxy locally and share their applications globally via Quant1's FRP server.
 
 ## Usage
 
-The intended use of the container described below is to configure it once, and then it can be started or stopped as needed.  
+The intended use of this branch is using Docker Compose and a `.credentials` file, making it easier to manage. 
 
-Since the configuration requires user input, a TTY is necessary.  
-However, after the initial configuration, you can stop it and then restart it, and it should function properly in a detached state.
+### Create credentials file
 
-### Creating the container
+Create a `.credentials` file in the same directory as your `docker-compose.yaml` file. The `.credentials` file should contain your Quant1 username and password separated by a space, for example:
 
 ```bash
-docker container run --name Quant1-frpc -it --network host registry.quant1.com.br/arthur/quant1-frpc
+cat <my user> <my password> > .credentials
 ```
 
-At the end, it will generate a URL that can be used globally. This URL is obtained by applying an md5sum to your Q1 username and appending ".cloud.quant1.com.br" to it.
+### Up and go
 
-### Stop/starting it
-
-To stop the execution
+With that file and the docker-compose.yml in the same folder, you can then start the app with
 
 ```bash
-docker container stop Quant1-frpc
-```
-
-To restart the execution
-
-```bash
-docker container start Quant1-frpc
+docker compose up -d #you may want to ommit the -d flag in the first run, to make sure there were no errors and to get your acess url as well
 ```
