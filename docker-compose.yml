@@ -1,16 +1,20 @@
 version: '3.3'
 services:
-    quant1-frp-client:
-      image: registry.quant1.com.br/arthur/quant1-frpc:compose
-        secrets:
-          - QUANT1_CREDENTIALS
-        environment:
-            - SERVER_ADDR=194.163.176.185
-            - SERVER_PORT=7000
-        container_name: Quant1-frpc
-        tty: true
-        stdin_open: true
-        network_mode: host
+  quant1-frp-client:
+    image: registry.quant1.com.br/arthur/quant1-frpc:compose
+    secrets:
+      - QUANT1_CREDENTIALS
+    environment:
+      - SERVER_ADDR=194.163.176.185
+      - SERVER_PORT=7000
+      - PROXY_NAME
+      - PROXY_TYPE
+      - PROXY_LOCAL_IP
+      - PROXY_LOCAL_PORT
+    container_name: Quant1-frpc
+    tty: true
+    stdin_open: true
+    network_mode: host
 secrets:
   QUANT1_CREDENTIALS:
     file: ./.credentials
