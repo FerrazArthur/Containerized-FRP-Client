@@ -27,10 +27,10 @@ COPY --from=installer /frp/ /frp/
 
 WORKDIR /frp/
 
-RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc quant1-frpc input_provider.sh && mv frpc quant1-frpc /bin 
+RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc quant1-frpc input_provider.sh && mv frpc /bin 
 
 USER quant1_frp_client
 
 ENTRYPOINT [ "sh" ]
 
-# CMD [ "-c", "./input_provider.sh | quant1-frpc non-interactive" ]
+CMD [ "-c", "./input_provider.sh | ./quant1-frpc non-interactive" ]

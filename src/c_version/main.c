@@ -68,6 +68,28 @@ void set_default_if_empty(char* input, const char* default_value) {
     }
 }
 
+void set_default_or_env(char* destination, const char* env_value, const char* default_value) {
+    // If env_value is null or empty, copy default_value to destination. Else, copy env_value
+    if (env_value == NULL || env_value[0] == "\0") {
+        strcpy(destination, default_value);
+    }
+    else {
+        strcpy(destination, env_value);
+    }
+}
+int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message) {
+    if (interactive == 1) {
+        printf(message);
+    }
+    if (fgets(destination, size_of_dest, stdin) == NULL) {
+        perror("Error reading input.\n");
+        return 1;
+    }
+
+    destination[strcspn(destination, "\n")] = '\0';  // remove the newline character
+    return 0;
+}
+
 int autenticate_quant1_user(char* username, int interactive) {
     // Authenticate user by calling ldapwhoami api.
     // If quant1 ldap server recognize user and password, then user is autenticated.
@@ -111,9 +133,9 @@ int autenticate_quant1_user(char* username, int interactive) {
     return 0;
 }
 
-int create_configuration_toml(const char* path, const char* serverAddr, const char* serverPort, \
-        const char* username, const char* typeValue, const char* ipValue, \
-        const char* local_port_value, const char* customDomain) {
+int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
+        const char* proxy_name, const char* type_value, const char* ip_value, \
+        const char* local_port_value, const char* custom_domain) {
     // Write the configuration file in folder.
     FILE* file = fopen(path, "w");
     if (file == NULL) {
@@ -121,14 +143,14 @@ int create_configuration_toml(const char* path, const char* serverAddr, const ch
         return 1;
     }
     
-    fprintf(file, "serverAddr = \"%s\"\n", serverAddr);
-    fprintf(file, "serverPort = %s\n\n", serverPort);
-    fprintf(file, "[[proxies]]\n");
-    fprintf(file, "name = \"%s\"\n", username);
-    fprintf(file, "type = \"%s\"\n", typeValue);
+    fprintf(file, "serverAddr = \"%s\"\n", server_url);
+    fprintf(file, "serverPort = %s\n", server_port);
+    fprintf(file, "\n[[proxies]]\n");
+    fprintf(file, "name = \"%s\"\n", proxy_name);
+    fprintf(file, "type = \"%s\"\n", type_value);
     fprintf(file, "localPort = %s\n", local_port_value);
-    fprintf(file, "localIp = \"%s\"\n", ipValue);
-    fprintf(file, "customDomains = [\"%s\"]\n", customDomain);
+    fprintf(file, "localIp = \"%s\"\n", ip_value);
+    fprintf(file, "customDomains = [\"%s\"]\n", custom_domain);
     
     fclose(file);
     return 0;
@@ -136,18 +158,19 @@ int create_configuration_toml(const char* path, const char* serverAddr, const ch
 
 int configure_frp_client(char* username, int interactive) {
     // Get the client file configurations 
-    const char* serverAddr_const = getenv("SERVER_ADDR");
-    const char* serverPort_const = getenv("SERVER_PORT");
+    const char* server_url_const = getenv("SERVER_ADDR");
+    const char* server_port_const = getenv("SERVER_PORT");
 
-    char serverAddr[100];
-    char serverPort[100];
-    char nameValue[100];
-    char typeValue[100];
-    char ipValue[100];
+    char server_url[100];
+    char server_port[100];
+    char name_value[100];
+    char type_value[100];
+    char ip_value[100];
     char local_port_value[100];
-    char customDomain[100];
+    char custom_domain[100];
     char proxy_name[100];
     char client_toml[100];
+    char message[200];
 
     int output = 0;
 
@@ -155,84 +178,54 @@ int configure_frp_client(char* username, int interactive) {
     strcat(proxy_name, "-proxy");
 
     // Check if the SERVER_ADDR environment variable is empty. If it is, default it.
-    if (serverAddr_const == NULL || serverAddr_const[0] == '\0') {
-        strcpy(serverAddr, FRPS_HOST_IP);
-    }
-    else {
-        strcpy(serverAddr, serverAddr_const);
-    }
+    set_default_or_env(server_url, server_url_const, FRPS_HOST_IP);
 
-    // Check if the SERVER_PORT environment variable is empty. If it is, default it.
-    if (serverPort_const == NULL || serverPort_const[0] == '\0') {
-        strcpy(serverPort, FRPS_HOST_PORT);
-    }
-    else {
-        strcpy(serverPort, serverPort_const);
-    }
+    set_default_or_env(server_port, server_port_const , FRPS_HOST_PORT);
 
     // Customize the client proxy file
 
-    // Setup frp server address
-
-    if (interactive == 1) {
-        printf("Enter a name for the proxy [%s-proxy]: ", username);
-    }
-    if (fgets(nameValue, sizeof(nameValue), stdin) == NULL) {
-        perror("Error reading input.\n");
+    snprintf(message, sizeof(message), "Enter a name for the proxy [%s-proxy]: ", username);
+    output = get_config_input(name_value, sizeof(name_value), interactive, message);
+    if (output != 0) {
         return 1;
     }
+    set_default_if_empty(name_value, proxy_name);
 
-    nameValue[strcspn(nameValue, "\n")] = '\0';  // remove the newline character
-    set_default_if_empty(nameValue, proxy_name);
-
-    if (interactive == 1) {
-        printf("Enter the connection type [http]: ");
-    }
-    if (fgets(typeValue, sizeof(typeValue), stdin) == NULL) {
-        perror("Error reading input.\n");
+    snprintf(message, sizeof(message), "Enter the connection type [http]: ");
+    output = get_config_input(type_value, sizeof(type_value), interactive, message);
+    if (output != 0) {
         return 1;
     }
+    set_default_if_empty(type_value, "http");
 
-    typeValue[strcspn(typeValue, "\n")] = '\0';  // Remove the newline character
-    set_default_if_empty(typeValue, "http");
-
-    if (interactive == 1) {
-        printf("Enter the local IP [127.0.0.1]: ");
-    }
-    if (fgets(ipValue, sizeof(ipValue), stdin) == NULL) {
-        perror("Error reading input.\n");
+    snprintf(message, sizeof(message), "Enter the local IP [127.0.0.1]: ");
+    output = get_config_input(ip_value, sizeof(ip_value), interactive, message);
+    if (output != 0) {
         return 1;
     }
+    set_default_if_empty(ip_value, "127.0.0.1");
 
-    ipValue[strcspn(ipValue, "\n")] = '\0';  // Remove the newline character
-    set_default_if_empty(ipValue, "127.0.0.1");
-
-    if (interactive == 1) {
-        printf("Enter the local port [3000]: ");
-    }
-    if (fgets(local_port_value, sizeof(local_port_value), stdin) == NULL) {
-        perror("Error reading input.\n");
+    snprintf(message, sizeof(message), "Enter the local port [3000]: ");
+    output = get_config_input(local_port_value, sizeof(local_port_value), interactive, message);
+    if (output != 0) {
         return 1;
     }
-
-    local_port_value[strcspn(local_port_value, "\n")] = '\0';  // Remove the newline character
     set_default_if_empty(local_port_value, "3000");
 
     // Generate a custom domain
-    snprintf(customDomain, sizeof(customDomain), "test.frp.quant1.com.br");
+    snprintf(custom_domain, sizeof(custom_domain), "test.frp.quant1.com.br");
 
     // Create the configuration file
 
     strcpy(client_toml, username);
     strcat(client_toml, "_client.toml");
 
-    output = create_configuration_toml(client_toml, serverAddr, serverPort, username, \
-            typeValue, ipValue, local_port_value, customDomain);
+    output = create_configuration_toml(client_toml, server_url, server_port, name_value, \
+            type_value, ip_value, local_port_value, custom_domain);
     if (output == 0){
         // Print configuration
         printf("\nConfiguration completed! Your local application can be accessed \
-globally via the domain:\n%s\n\n",
-               customDomain);
+globally via the domain:\n%s\n\n", custom_domain);
         return 0;
     }
     return 1;
@@ -246,6 +239,9 @@ int main(int argc, char* argv[]) {
     char client_toml[100];
     char run_command[100];
     int interactive = 1;
+    
+    // Remove stdout need of \n to be printed.
+    setvbuf(stdout, NULL, _IONBF, 0);
     
     // Check if the username was passed as an argument
     if (username_const == NULL || username_const[0] == '\0') {
