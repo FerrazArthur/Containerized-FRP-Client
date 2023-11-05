@@ -9,14 +9,11 @@ ARG FRP_VERSION
 ARG OS=linux
 ARG ARCH=amd64
 
-RUN apk add --no-cache wget tar alpine-sdk 
+RUN apk add --no-cache wget tar 
 
 RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && tar xvf frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && mv frp_"$FRP_VERSION"_"$OS"_"$ARCH" frp && cd frp && rm frps frps.toml LICENSE
 
-COPY src/c_version/main.c .
 COPY input_provider/input_provider.sh /frp/
-
-RUN gcc -o frp/quant1-frpc main.c
 
 # Final image
 FROM alpine:"$ALPINE_VERSION"
@@ -25,12 +22,14 @@ RUN apk add --no-cache openldap-clients && addgroup -S -g 10001 quant1_group && 
 
 COPY --from=installer /frp/ /frp/
 
+COPY src/sh_version/*.sh /frp/
+
 WORKDIR /frp/
 
-RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc quant1-frpc input_provider.sh && mv frpc quant1-frpc /bin 
+RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc *.sh && mv frpc /bin 
 
 USER quant1_frp_client
 
 ENTRYPOINT [ "sh" ]
 
-# CMD [ "-c", "./input_provider.sh | quant1-frpc non-interactive" ]
+CMD [ "-c", "./input_provider.sh | ./main.sh non-interactive" ]
