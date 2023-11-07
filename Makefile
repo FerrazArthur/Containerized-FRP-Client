@@ -8,9 +8,11 @@ SRCDIR = src/c_version
 OBJDIR = $(SRCDIR)/build
 BINDIR = .
 
-# Source Files
-SRCFILES = $(wildcard $(SRCDIR)/*.c)
-OBJFILES = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCFILES))
+# Source files
+SOURCES := $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c)
+
+# Object files
+OBJECTS := $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
 
 # Target Executable
 TARGET = $(BINDIR)/quant1_frpc
