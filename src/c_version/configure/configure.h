@@ -1,6 +1,12 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// The default FRPS server IP address.
+#define FRPS_HOST_IP "194.163.176.185"
+
+// The default FRPS server port.
+#define FRPS_HOST_PORT "7000"
+
 /**
  * @brief Create an frp client configuration file in TOML format.
  *

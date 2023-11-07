@@ -1,13 +1,9 @@
-# Define compiler and compiler flags
-CC = gcc
-CFLAGS = -Wall -pedantic
-
 # Directories
 SRCDIR = ./src/c_version
-OBJDIR = $(SRCDIR)/build/objects
+OBJDIR = ./src/c_version/build/objects
 
 # Source files
-SOURCES = $(wildcard $(SRCDIR)/*/*.c)
+SOURCES = $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCDIR)/*/*.c)
 
 # Object files
 OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
@@ -24,7 +20,7 @@ $(EXECUTABLE): $(OBJECTS)
 
 # Compile source files into object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)  # Ensure the directory exists
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean rule

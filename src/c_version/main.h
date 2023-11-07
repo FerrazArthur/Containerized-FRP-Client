@@ -12,3 +12,5 @@
  * @return 0 upon successful execution; 1 in case of errors.
  */
 int main(int argc, char* argv[]);
+
+#endif

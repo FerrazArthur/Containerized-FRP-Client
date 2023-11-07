@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <stdarg.h>
 
-#include "config_utils.h"
+#include "config_utils/config_utils.h"
 #include "configure.h"
 
 int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
