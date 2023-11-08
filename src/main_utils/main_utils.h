@@ -30,4 +30,31 @@ char* find_pattern_in_path(const char* pattern, const char* path);
  */
 void remove_extension_from_string(char* name, char* extension);
 
+/**
+ * Process a command-line argument and set the interactive flag.
+ *
+ * @param arg (char*): The command-line argument to be processed.
+ * @param interactive (int*): A pointer to an integer variable to indicate interactive mode.
+ *
+ * @return
+ *   - 0: Indicates successful processing and that the program should run interactively.
+ *   - 1: Indicates an unknown argument error.
+ *   - 2: Indicates that the help message was displayed, and the program should exit.
+ */
+int process_arg(char* arg, int *interactive);
+
+/**
+ * Read and process command-line arguments.
+ *
+ * @param argc (int): The number of command-line arguments.
+ * @param argv (char*[]): An array of command-line argument strings.
+ * @param interactive (int*): A pointer to an integer variable to indicate interactive mode.
+ *
+ * @return
+ *   - 0: Indicates successful processing and that the program should run interactively.
+ *   - 1: Indicates an unknown argument error.
+ *   - 2: Indicates that the help message was displayed, and the program should exit.
+ */
+int read_args(int argc, char* argv[], int* interactive);
+
 #endif

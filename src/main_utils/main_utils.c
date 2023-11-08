@@ -16,7 +16,7 @@ char* find_pattern_in_path(const char* pattern, const char* path) {
     DIR *dp = opendir(path);
     
     if (dp == NULL) {
-        perror("Failed to open pathectory.");
+        perror("Failed to open directory.\n");
         return NULL;
     }
 
@@ -44,4 +44,46 @@ void remove_extension_from_string(char* name, char* extension) {
     if (found) {
         *found = '\0';
     }
+}
+
+int process_arg(char* arg, int *interactive) {
+    char *message = "Uso: quant1_frpc [OPÇÕES]\n"
+    "Autentica o usuário, configura um cliente de proxy reverso rápido e o inicia.\n\n"
+    "Opções:\n"
+    "  --help, -h          Exibe esta mensagem de ajuda\n"
+    "  --interactive, -i   Executa interativamente, solicitando informações \
+conforme configura o arquivo e realiza a autenticação\n";
+    if (strcmp(arg, "help") == 0 || strcmp(arg, "h") == 0) {
+        printf("%s", message);
+        return 2;
+    }
+    else if (strcmp(arg, "interactive") == 0 || strcmp(arg, "i") == 0) {
+        *interactive = 1;
+        return 0;
+    }
+
+    perror("Error: Unknown argument.\n");
+    return 1;
+}
+
+int read_args(int argc, char* argv[], int* interactive) {
+    // Receive the args passed to the program and return codes.
+    int code_return = 0;
+    for (int i = 1; i < argc; i++) {
+        if (strncmp(argv[i], "--", 2) == 0) {
+            code_return = process_arg(argv[i]+2, interactive);
+        }
+        else if (strncmp(argv[i], "-", 1) == 0) {
+            code_return = process_arg(argv[i]+1, interactive);
+        }
+        else {
+            perror("Error: Unknown argument format.\n");
+            code_return = 1;
+        }
+
+        if (code_return == 1 || code_return == 2) {
+            return code_return;
+        }
+    }
+    return code_return;
 }
