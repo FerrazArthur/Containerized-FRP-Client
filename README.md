@@ -75,7 +75,7 @@ However, after the initial configuration, you can stop it and then restart it, a
 ### Creating the container
 
 ```bash
-docker container run --name Quant1-frpc -it --network host registry.quant1.com.br/arthur/quant1-frpc:run
+docker container run --name Quant1-frpc -it --network host registry.quant1.com.br/arthur/quant1-frpc
 ```
 
 At the end, it will generate a URL that can be used globally. This URL is obtained by applying an md5sum to your Q1 username and appending ".cloud.quant1.com.br" to it.
