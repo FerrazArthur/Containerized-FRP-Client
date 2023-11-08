@@ -16,7 +16,7 @@ void set_default_if_empty(char* input, const char* default_value) {
 
 void set_default_or_env(char* destination, const char* env_value, const char* default_value) {
     // If env_value is null or empty, copy default_value to destination. Else, copy env_value
-    if (env_value == NULL || env_value[0] == "\0") {
+    if (env_value == NULL || env_value[0] == '\0') {
         strcpy(destination, default_value);
     }
     else {
@@ -25,7 +25,7 @@ void set_default_or_env(char* destination, const char* env_value, const char* de
 }
 int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message) {
     if (interactive == 1) {
-        printf(message);
+        printf("%s", message);
     }
     if (fgets(destination, size_of_dest, stdin) == NULL) {
         perror("Error reading input.\n");
