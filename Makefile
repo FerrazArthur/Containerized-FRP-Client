@@ -11,7 +11,7 @@ CC = gcc
 CFLAGS = -Wall -pedantic -Wextra -Werror
 
 # Executable
-EXECUTABLE = quant1_frpc
+EXECUTABLE = quant1-frpc
 
 all: $(EXECUTABLE)
 
