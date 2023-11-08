@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     }
 
     // If anything else was passed as an argument, disable interactive mode
-    if (argc > 1) {
+    if (argc > 1 && argv[0][0] != '\0') {
         interactive = 0;
     }
     // Search for a client configuration file

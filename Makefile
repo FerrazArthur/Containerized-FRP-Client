@@ -8,7 +8,7 @@ OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
 # Compilation flags
 CC = gcc
-CFLAGS = -Wall -pedantic
+CFLAGS = -Wall -pedantic -Wextra -Werror
 
 # Executable
 EXECUTABLE = quant1_frpc
