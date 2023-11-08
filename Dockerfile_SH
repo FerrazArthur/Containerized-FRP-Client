@@ -22,7 +22,7 @@ RUN apk add --no-cache openldap-clients && addgroup -S -g 10001 quant1_group && 
 
 COPY --from=installer /frp/ /frp/
 
-COPY src/sh_version/*.sh /frp/
+COPY sh_version/*.sh /frp/
 
 WORKDIR /frp/
 

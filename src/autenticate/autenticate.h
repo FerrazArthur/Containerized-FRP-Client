@@ -1,6 +1,10 @@
 #ifndef AUTENTICATE_H
 #define AUTENTICATE_H
 
+// LDAPHOST is the address of the LDAP server used for authentication (Quant1).
+// Update this value to match the LDAP server's address.
+#define LDAP_HOST "ldap://ldap.quant1.com.br:389"
+
 /**
  * @brief Authenticate a user against the Quant1 LDAP server.
  *

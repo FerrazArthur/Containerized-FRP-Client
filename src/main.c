@@ -14,10 +14,12 @@ int main(int argc, char* argv[]) {
     // This code will break if any env variable or parameter passed is longer than 
     //100 characters
     const char* username_const = getenv("QUANT1_USER");
+    char* client_toml_tmp = NULL;
     char username[100];
     char client_toml[100];
     char run_command[100];
-    int interactive = 1;
+    int interactive = 0;
+    int output = 0;
     
     // Remove stdout need of \n to be printed.
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -30,12 +32,17 @@ int main(int argc, char* argv[]) {
         strcpy(username, username_const);
     }
 
-    // If anything else was passed as an argument, disable interactive mode
-    if (argc > 1) {
-        interactive = 0;
+    // Process any arguments passed to this function
+    output = read_args(argc, argv, &interactive);
+    if (output == 1) {
+        return 1;
     }
+    else if (output == 2) {
+        return 0;
+    }
+
     // Search for a client configuration file
-    char* client_toml_tmp = find_pattern_in_path("_client.toml", ".");
+    client_toml_tmp = find_pattern_in_path("_client.toml", ".");
 
     // If a client configuration file was found
     if (client_toml_tmp != NULL) {
@@ -63,7 +70,7 @@ int main(int argc, char* argv[]) {
             username[strcspn(username, "\n")] = '\0';  // Remove the newline character
         }
         // Authenticate user
-        int output = autenticate_quant1_user(username, interactive);
+        output = autenticate_quant1_user(username, interactive);
         if (output != 0) {
             perror("Error authenticating user.");
             return 1;

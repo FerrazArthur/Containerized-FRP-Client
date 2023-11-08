@@ -1,40 +1,31 @@
-# Compiler and Compilation Flags
+# Directory structure
+SRCDIR = ./src
+OBJDIR = ./build
+
+# Source files
+SOURCES = $(shell find $(SRCDIR) -name "*.c")
+OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
+
+# Compilation flags
 CC = gcc
-CFLAGS = -Wall -pedantic
-LDFLAGS =
+CFLAGS = -Wall -pedantic -Wextra -Werror
 
-# Directories
-SRCDIR = src/c_version
-OBJDIR = $(SRCDIR)/build
-BINDIR = .
+# Executable
+EXECUTABLE = quant1-frpc
 
-# Source Files
-SRCFILES = $(wildcard $(SRCDIR)/*.c)
-OBJFILES = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCFILES))
+all: $(EXECUTABLE)
 
-# Target Executable
-TARGET = $(BINDIR)/quant1_frpc
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(CFLAGS) $^ -o $@
 
-# Build Rule
-$(TARGET): $(OBJFILES)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
-
-# Object File Compilation Rule
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean Rule
-clean:
-	rm -f $(OBJFILES) $(TARGET)
+$(BUILDDIR):
+	mkdir -p $@
 
 .PHONY: clean
 
-# Build and Run Rule
-run: $(TARGET)
-	./$(TARGET)
-
-# Default Target
-all: $(TARGET)
-
-.PHONY: run all
-
+clean:
+	rm -rf $(OBJDIR) $(EXECUTABLE)

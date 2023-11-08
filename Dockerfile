@@ -9,14 +9,15 @@ ARG FRP_VERSION
 ARG OS=linux
 ARG ARCH=amd64
 
-RUN apk add --no-cache wget tar alpine-sdk 
+RUN apk add --no-cache wget tar alpine-sdk make
 
 RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && tar xvf frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && mv frp_"$FRP_VERSION"_"$OS"_"$ARCH" frp && cd frp && rm frps frps.toml LICENSE
 
-COPY src/c_version/main.c .
+COPY src/ /src/
+COPY Makefile Makefile
 COPY input_provider/input_provider.sh /frp/
 
-RUN gcc -o frp/quant1-frpc main.c
+RUN make && mv quant1-frpc /frp/
 
 # Final image
 FROM alpine:"$ALPINE_VERSION"
@@ -33,4 +34,4 @@ USER quant1_frp_client
 
 ENTRYPOINT [ "sh" ]
 
-CMD [ "-c", "./input_provider.sh | ./quant1-frpc non-interactive" ]
+CMD [ "-c", "./quant1-frpc -i" ]
