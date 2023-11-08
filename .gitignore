@@ -1,3 +1,4 @@
 .credentials
 /build/
 quant1_frpc
+/.vscode/
