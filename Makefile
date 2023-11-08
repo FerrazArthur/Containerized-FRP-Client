@@ -22,6 +22,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(BUILDDIR):
+	mkdir -p $@
+
 .PHONY: clean
 
 clean:
