@@ -1,5 +1,5 @@
-#ifndef AUTENTICATE_H
-#define AUTENTICATE_H
+#ifndef AUTHENTICATE_H
+#define AUTHENTICATE_H
 
 // LDAPHOST is the address of the LDAP server used for authentication (Quant1).
 // Update this value to match the LDAP server's address.
@@ -16,5 +16,5 @@
  *
  * @return 0 upon successful authentication; 1 in case of authentication failure.
  */
-int autenticate_quant1_user(char* username, int interactive);
+int authenticate_quant1_user(char* username, int interactive);
 #endif
