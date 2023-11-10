@@ -8,7 +8,7 @@
 #include "main.h"
 #include "main_utils/main_utils.h"
 #include "configure/configure.h"
-#include "autenticate/autenticate.h"
+#include "authenticate/authenticate.h"
 
 int main(int argc, char* argv[]) {
     // This code will break if any env variable or parameter passed is longer than 
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
             username[strcspn(username, "\n")] = '\0';  // Remove the newline character
         }
         // Authenticate user
-        output = autenticate_quant1_user(username, interactive);
+        output = authenticate_quant1_user(username, interactive);
         if (output != 0) {
             perror("Error authenticating user.");
             return 1;

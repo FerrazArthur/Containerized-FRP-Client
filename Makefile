@@ -9,6 +9,7 @@ OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 # Compilation flags
 CC = gcc
 CFLAGS = -Wall -pedantic -Wextra -Werror
+CLINKS = -lldap -llber
 
 # Executable
 EXECUTABLE = quant1-frpc
@@ -16,11 +17,11 @@ EXECUTABLE = quant1-frpc
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(CLINKS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ $(CLINKS)
 
 $(BUILDDIR):
 	mkdir -p $@
