@@ -43,11 +43,12 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
  *
  * @param username The user's username for configuration.
  * @param interactive A flag indicating whether to run interactively (1 for yes, 0 for no).
+ * @param input_stream The input stream to read from (stdin or buffer).
  *
  * @return 0 if the client is successfully configured; 1 in case of an error during configuration.
  *
  * @note When running interactively, this function will prompt the user for various configuration options.
  */
-int configure_frp_client(char* username, int interactive);
+int configure_frp_client(char* username, int interactive, FILE *input_stream);
 
 #endif

@@ -70,11 +70,12 @@ void set_default_or_env(char* destination, const char* env_value, const char* de
  * @param size_of_dest The size of the destination string to prevent buffer overflows.
  * @param interactive A flag indicating whether to display a message to the user (1 for yes, 0 for no).
  * @param message The optional message to display to the user before collecting input.
+ * @param input_stream The input stream to read from (stdin or buffer).
  *
  * @return 0 if input is successfully read and stored; 1 in case of an error, such as failure to read input.
  *
  * @note This function modifies the destination string and removes the newline character from the input.
  */
-int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message);
+int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message, FILE *input_stream);
 
 #endif

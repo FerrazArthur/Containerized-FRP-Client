@@ -13,8 +13,9 @@
  *
  * @param username The username of the user to authenticate.
  * @param interactive Set to 1 to enable interactive input for LDAP password; set to 0 for non-interactive mode.
+ * @param input_stream The input stream to use for interactive input.
  *
  * @return 0 upon successful authentication; 1 in case of authentication failure.
  */
-int authenticate_quant1_user(char* username, int interactive);
+int authenticate_quant1_user(char* username, int interactive, FILE *input_stream);
 #endif
