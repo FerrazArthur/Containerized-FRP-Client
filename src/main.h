@@ -1,6 +1,13 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#define BUFFER_SIZE 1536
+#define CONFIG_FILE_SUFFIX "_client.toml"
+#ifndef CREDENTIALS_PATH
+
+#define CREDENTIALS_PATH "/run/secrets/QUANT1_CREDENTIALS"
+
+#endif
 /**
  * @brief Main function of the program that configures and runs the FRP client.
  *

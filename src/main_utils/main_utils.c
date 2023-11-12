@@ -8,7 +8,8 @@
 #include "main_utils.h"
 
 char* find_pattern_in_path(const char* pattern, const char* path) {
-    // Search path for files that has substr pattern and return first occurrence, return NULL if not find.
+    // Search path for files that has substr pattern and return first occurrence, return 
+    // NULL if not find.
     // Doesnt search recursivelly.
     struct dirent *entry = NULL;
     struct stat file_stat;
@@ -16,7 +17,7 @@ char* find_pattern_in_path(const char* pattern, const char* path) {
     DIR *dp = opendir(path);
     
     if (dp == NULL) {
-        perror("Failed to open directory.\n");
+        fprintf(stderr, "Failed to open directory: Path: %s\n", path);
         return NULL;
     }
 
@@ -62,7 +63,7 @@ conforme configura o arquivo e realiza a autenticação\n";
         return 0;
     }
 
-    perror("Error: Unknown argument.\n");
+    fprintf(stderr, "Error: Unknown argument: %s\n", arg);
     return 1;
 }
 
@@ -77,7 +78,7 @@ int read_args(int argc, char* argv[], int* interactive) {
             code_return = process_arg(argv[i]+1, interactive);
         }
         else {
-            perror("Error: Unknown argument format.\n");
+            fprintf(stderr, "Error: Unknown argument format: %s\n", argv[i]);
             code_return = 1;
         }
 

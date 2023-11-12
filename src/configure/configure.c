@@ -14,7 +14,7 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
     // Write the configuration file in folder.
     FILE* file = fopen(path, "w");
     if (file == NULL) {
-        perror("Error opening the file for writing.\n");
+        fprintf(stderr, "Error opening the file for writing: %s\n", path);
         return 1;
     }
     
@@ -31,21 +31,21 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
     return 0;
 }
 
-int configure_frp_client(char* username, int interactive) {
+int configure_frp_client(char* username, int interactive, FILE *input_stream) {
     // Get the client file configurations 
     const char* server_url_const = getenv("SERVER_ADDR");
     const char* server_port_const = getenv("SERVER_PORT");
 
-    char server_url[100];
-    char server_port[100];
-    char name_value[100];
-    char type_value[100];
-    char ip_value[100];
-    char local_port_value[100];
-    char custom_domain[100];
-    char proxy_name[100];
-    char client_toml[100];
-    char message[200];
+    char server_url[256];
+    char server_port[256];
+    char name_value[256];
+    char type_value[256];
+    char ip_value[256];
+    char local_port_value[256];
+    char custom_domain[256];
+    char proxy_name[256];
+    char client_toml[256];
+    char message[256];
 
     int output = 0;
 
@@ -60,28 +60,28 @@ int configure_frp_client(char* username, int interactive) {
     // Customize the client proxy file
 
     snprintf(message, sizeof(message), "Enter a name for the proxy [%s-proxy]: ", username);
-    output = get_config_input(name_value, sizeof(name_value), interactive, message);
+    output = get_config_input(name_value, sizeof(name_value), interactive, message, input_stream);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(name_value, proxy_name);
 
     snprintf(message, sizeof(message), "Enter the connection type [http]: ");
-    output = get_config_input(type_value, sizeof(type_value), interactive, message);
+    output = get_config_input(type_value, sizeof(type_value), interactive, message, input_stream);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(type_value, "http");
 
     snprintf(message, sizeof(message), "Enter the local IP [127.0.0.1]: ");
-    output = get_config_input(ip_value, sizeof(ip_value), interactive, message);
+    output = get_config_input(ip_value, sizeof(ip_value), interactive, message, input_stream);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(ip_value, "127.0.0.1");
 
     snprintf(message, sizeof(message), "Enter the local port [3000]: ");
-    output = get_config_input(local_port_value, sizeof(local_port_value), interactive, message);
+    output = get_config_input(local_port_value, sizeof(local_port_value), interactive, message, input_stream);
     if (output != 0) {
         return 1;
     }

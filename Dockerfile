@@ -15,7 +15,6 @@ RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"
 
 COPY src/ /src/
 COPY Makefile Makefile
-COPY input_provider/input_provider.sh /frp/
 
 RUN make && mv quant1-frpc /frp/
 
@@ -28,7 +27,7 @@ COPY --from=installer /frp/ /frp/
 
 WORKDIR /frp/
 
-RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc quant1-frpc input_provider.sh && mv frpc /bin 
+RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc quant1-frpc && mv frpc /bin 
 
 USER quant1_frp_client
 
