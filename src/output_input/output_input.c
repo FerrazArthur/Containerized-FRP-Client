@@ -12,7 +12,6 @@ void read_store_credentials(struct Credentials *credentials, const char* path) {
     FILE *cred_file = fopen(path, "r");
     if (cred_file == NULL) {
         fprintf(stderr, "Error opening %s\n", path);
-        fclose(cred_file);
         exit(EXIT_FAILURE);
     }
 
@@ -25,6 +24,11 @@ void read_store_credentials(struct Credentials *credentials, const char* path) {
         token = strtok(NULL, " ");
         if (token != NULL) {
             strncpy(credentials->password, token, sizeof(credentials->password));
+        }
+        else {
+            fprintf(stderr, "Error reading %s: password not properly defined.\n", path);
+            fclose(cred_file);
+            exit(EXIT_FAILURE);
         }
     }
     else {
