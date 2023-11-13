@@ -43,49 +43,49 @@ int configure_frp_client(char* username, int interactive) {
     char ip_value[256];
     char local_port_value[256];
     char custom_domain[256];
-    char proxy_name[256];
+    char default_proxy_name[256];
     char client_toml[256];
-    char message[256];
+    char message[356];
 
     int output = 0;
 
-    strcpy(proxy_name, username);
-    strcat(proxy_name, "-proxy");
+    strcpy(default_proxy_name, username);
+    strcat(default_proxy_name, "-proxy");
 
     // Check if the SERVER_ADDR environment variable is empty. If it is, default it.
-    set_default_or_env(server_url, server_url_const, FRPS_HOST_IP);
+    set_default_or_env(server_url, server_url_const, DEFAULT_FRPS_HOST_IP);
 
-    set_default_or_env(server_port, server_port_const , FRPS_HOST_PORT);
+    set_default_or_env(server_port, server_port_const , DEFAULT_FRPS_HOST_PORT);
 
     // Customize the client proxy file
 
-    snprintf(message, sizeof(message), "Enter a name for the proxy [%s-proxy]: ", username);
+    snprintf(message, sizeof(message), "Enter a name for the proxy [%s]: ", default_proxy_name);
     output = get_config_input(name_value, sizeof(name_value), interactive, message, PROXY_NAME);
     if (output != 0) {
         return 1;
     }
-    set_default_if_empty(name_value, proxy_name);
+    set_default_if_empty(name_value, default_proxy_name);
 
-    snprintf(message, sizeof(message), "Enter the connection type [http]: ");
+    snprintf(message, sizeof(message), "Enter the connection type [%s]: ", DEFAULT_PROXY_TYPE);
     output = get_config_input(type_value, sizeof(type_value), interactive, message, PROXY_TYPE);
     if (output != 0) {
         return 1;
     }
-    set_default_if_empty(type_value, "http");
+    set_default_if_empty(type_value, DEFAULT_PROXY_TYPE);
 
-    snprintf(message, sizeof(message), "Enter the local IP [127.0.0.1]: ");
+    snprintf(message, sizeof(message), "Enter the local IP [%s]: ", DEFAULT_PROXY_LOCAL_IP);
     output = get_config_input(ip_value, sizeof(ip_value), interactive, message, PROXY_LOCAL_IP);
     if (output != 0) {
         return 1;
     }
-    set_default_if_empty(ip_value, "127.0.0.1");
+    set_default_if_empty(ip_value, DEFAULT_PROXY_LOCAL_IP);
 
-    snprintf(message, sizeof(message), "Enter the local port [3000]: ");
+    snprintf(message, sizeof(message), "Enter the local port [%s]: ", DEFAULT_PROXY_LOCAL_PORT);
     output = get_config_input(local_port_value, sizeof(local_port_value), interactive, message, PROXY_LOCAL_PORT);
     if (output != 0) {
         return 1;
     }
-    set_default_if_empty(local_port_value, "3000");
+    set_default_if_empty(local_port_value, DEFAULT_PROXY_LOCAL_PORT);
 
     // Generate a custom domain
     snprintf(custom_domain, sizeof(custom_domain), "test.frp.quant1.com.br");

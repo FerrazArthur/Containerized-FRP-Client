@@ -2,16 +2,24 @@
 #define CONFIG_H
 
 // The default FRPS server IP address.
-#define FRPS_HOST_IP "194.163.176.185"
+#define DEFAULT_FRPS_HOST_IP "194.163.176.185"
 
 // The default FRPS server port.
-#define FRPS_HOST_PORT "7000"
+#define DEFAULT_FRPS_HOST_PORT "7000"
 
 // Variáveis para o arquivo de configuração do cliente
+
 #define PROXY_NAME "PROXY_NAME"
+
+// Variáveis com valor default para o arquivo de configuração do cliente
 #define PROXY_TYPE "PROXY_TYPE"
+#define DEFAULT_PROXY_TYPE "http"
+
 #define PROXY_LOCAL_IP "PROXY_LOCAL_IP"
+#define DEFAULT_PROXY_LOCAL_IP "127.0.0.1"
+
 #define PROXY_LOCAL_PORT "PROXY_LOCAL_PORT"
+#define DEFAULT_PROXY_LOCAL_PORT "3000"
 
 /**
  * @brief Create an frp client configuration file in TOML format.

@@ -7,6 +7,13 @@
 #define CREDENTIALS_PATH "/run/secrets/QUANT1_CREDENTIALS"
 
 #endif
+
+#ifndef SERVER_CONFIG_PATH
+
+#define SERVER_CONFIG_PATH "./server_config"
+
+#endif
+
 /**
  * @brief Main function of the program that configures and runs the FRP client.
  *

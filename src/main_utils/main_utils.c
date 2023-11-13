@@ -7,6 +7,39 @@
 
 #include "main_utils.h"
 
+
+void read_server_configuration(const char* path) {
+    char line[256];
+    char *token = NULL;
+    FILE *server_file = fopen(path, "r");
+    if (server_file == NULL) {
+        fprintf(stderr, "Error opening %s\n", path);
+        exit(EXIT_FAILURE);
+    }
+
+    if (fgets(line, sizeof(line), server_file) != NULL) {
+        token = strtok(line, ":");
+        if (token != NULL) {
+            setenv("FRPC_SERVER_ADDR", token, 1);
+        }
+
+        token = strtok(NULL, ":");
+        if (token != NULL) {
+            setenv("FRPC_SERVER_PORT", token, 1);
+        }
+        else {
+            fprintf(stderr, "Error reading %s: server host not properly defined.\n", path);
+            fclose(server_file);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else {
+        fprintf(stderr, "Error reading %s: file is empty.\n", path);
+        fclose(server_file);
+        exit(EXIT_FAILURE);
+    }
+}
+
 // Read credentials from file and store them in a structure
 void read_store_credentials(struct Credentials *credentials, const char* path) {
     char line[256];

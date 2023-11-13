@@ -13,8 +13,12 @@ RUN apk add --no-cache wget tar alpine-sdk make openldap-dev
 
 RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && tar xvf frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz && mv frp_"$FRP_VERSION"_"$OS"_"$ARCH" frp && cd frp && rm frps frps.toml LICENSE
 
+# Copies build related files
 COPY src/ /src/
 COPY Makefile Makefile
+
+# Copies server configuration fole
+COPY ./server_config /frp/server_config
 
 RUN make && mv quant1-frpc /frp/
 

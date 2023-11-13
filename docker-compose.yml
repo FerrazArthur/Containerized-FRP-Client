@@ -7,12 +7,10 @@ services:
     secrets:
       - QUANT1_CREDENTIALS
     environment:
-      - SERVER_ADDR=194.163.176.185
-      - SERVER_PORT=7000
-      - PROXY_NAME
-      - PROXY_TYPE
-      - PROXY_LOCAL_IP
-      - PROXY_LOCAL_PORT
+      - PROXY_NAME=${PROXY_NAME}
+      - PROXY_TYPE=${PROXY_TYPE}
+      - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
+      - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
     container_name: Quant1-frpc
     tty: true
     stdin_open: true
