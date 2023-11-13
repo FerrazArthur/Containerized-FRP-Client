@@ -23,13 +23,23 @@ void set_default_or_env(char* destination, const char* env_value, const char* de
         strcpy(destination, env_value);
     }
 }
-int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message, FILE *input_stream) {
+int get_config_input(char* destination, size_t size_of_dest, int interactive, char* message\
+, const char* env_variable_name) {
     if (interactive == 1) {
         printf("%s", message);
+        if (fgets(destination, size_of_dest, stdin) == NULL) {
+            perror("Error reading input.\n");
+            return 1;
+        }
     }
-    if (fgets(destination, size_of_dest, input_stream) == NULL) {
-        perror("Error reading input.\n");
-        return 1;
+    else if (interactive == 0) {
+        char* env_value = getenv(env_variable_name);
+        if (env_value != NULL) {
+            strncpy(destination, env_value, size_of_dest);
+        }
+        else {
+            strncpy(destination, "", size_of_dest);
+        }
     }
 
     destination[strcspn(destination, "\n")] = '\0';  // remove the newline character

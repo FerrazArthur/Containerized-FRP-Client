@@ -1,7 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define BUFFER_SIZE 1536
 #define CONFIG_FILE_SUFFIX "_client.toml"
 #ifndef CREDENTIALS_PATH
 

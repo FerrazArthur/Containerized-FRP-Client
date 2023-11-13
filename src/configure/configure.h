@@ -7,6 +7,12 @@
 // The default FRPS server port.
 #define FRPS_HOST_PORT "7000"
 
+// Variáveis para o arquivo de configuração do cliente
+#define PROXY_NAME "PROXY_NAME"
+#define PROXY_TYPE "PROXY_TYPE"
+#define PROXY_LOCAL_IP "PROXY_LOCAL_IP"
+#define PROXY_LOCAL_PORT "PROXY_LOCAL_PORT"
+
 /**
  * @brief Create an frp client configuration file in TOML format.
  *
@@ -23,7 +29,8 @@
  * @param local_port_value The local port for the proxy.
  * @param custom_domain The custom domain for accessing the local application.
  *
- * @return 0 if the configuration file is successfully created; 1 in case of an error during file creation.
+ * @return 0 if the configuration file is successfully created; 1 in case of an error during file 
+ * creation.
  *
  * @note The function saves the configuration to a file in the specified path, and the created file 
  * can be used to configure the frp client.
@@ -43,12 +50,12 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
  *
  * @param username The user's username for configuration.
  * @param interactive A flag indicating whether to run interactively (1 for yes, 0 for no).
- * @param input_stream The input stream to read from (stdin or buffer).
  *
  * @return 0 if the client is successfully configured; 1 in case of an error during configuration.
  *
- * @note When running interactively, this function will prompt the user for various configuration options.
+ * @note When running interactively, this function will prompt the user for various configuration 
+ * options.
  */
-int configure_frp_client(char* username, int interactive, FILE *input_stream);
+int configure_frp_client(char* username, int interactive);
 
 #endif

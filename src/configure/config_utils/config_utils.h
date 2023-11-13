@@ -10,7 +10,8 @@
  * @param pattern The pattern to match in file names.
  * @param path The directory path to search for files.
  *
- * @return A dynamically allocated string containing the name of the first matching file, or NULL if not found.
+ * @return A dynamically allocated string containing the name of the first matching file, or NULL 
+ * if not found.
  *
  * @note The returned string is dynamically allocated and should be freed when no longer needed to 
  * prevent memory leaks.
@@ -26,7 +27,8 @@ char* find_pattern_in_path(const char* pattern, const char* path);
  * @param name The input string from which to remove the extension.
  * @param extension The extension to be removed from the string.
  *
- * @note This function modifies the input string directly by replacing the extension with a null character ('\0').
+ * @note This function modifies the input string directly by replacing the extension with a null 
+ * character ('\0').
  */
 void remove_extension_from_string(char* name, char* extension);
 
@@ -62,7 +64,8 @@ void set_default_or_env(char* destination, const char* env_value, const char* de
 /**
  * @brief Get user input and store it in a string, optionally displaying a message.
  *
- * This function reads user input from the standard input (stdin) and stores it in the provided destination string. 
+ * This function reads user input from the standard input (stdin) and stores it in the provided 
+ * destination string. 
  * It can also display an optional message to the user before input is collected. 
  * The function removes the newline character from the input.
  *
@@ -70,12 +73,13 @@ void set_default_or_env(char* destination, const char* env_value, const char* de
  * @param size_of_dest The size of the destination string to prevent buffer overflows.
  * @param interactive A flag indicating whether to display a message to the user (1 for yes, 0 for no).
  * @param message The optional message to display to the user before collecting input.
- * @param input_stream The input stream to read from (stdin or buffer).
  *
- * @return 0 if input is successfully read and stored; 1 in case of an error, such as failure to read input.
+ * @return 0 if input is successfully read and stored; 1 in case of an error, such as failure to read 
+ * input.
  *
  * @note This function modifies the destination string and removes the newline character from the input.
  */
-int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message, FILE *input_stream);
+int get_config_input(char* destination,size_t size_of_dest, int interactive, char* message, \
+const char* env_variable_name);
 
 #endif
