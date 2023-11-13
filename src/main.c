@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
-#include <sys/stat.h>
-#include <stdarg.h>
+#include <unistd.h>
 
 #include "main.h"
 #include "main_utils/main_utils.h"
@@ -15,7 +14,8 @@ int main(int argc, char* argv[]) {
     // 256 characters
     char* client_toml_tmp = NULL;
     char client_toml[256];
-    char run_command[256];
+    const char *run_command_argv[] = {FRPC_EXECUTABLE_NAME, "-c", client_toml, NULL};
+    const char *run_command = FRPC_EXECUTABLE_NAME;
     int interactive = 0;
     int output = 0;
     struct Credentials credentials;
@@ -79,14 +79,16 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    strcpy(client_toml, credentials.user);
+    strncpy(client_toml, credentials.user, sizeof(client_toml));
     strcat(client_toml, CONFIG_FILE_SUFFIX);
-    
+
     // Run the frpc binary
-    strcpy(run_command, "frpc -c ");
-    strcat(run_command, client_toml);
     printf("Running frp client: \n");
-    system(run_command);
+
+    if (execvp(run_command, (char* const*)run_command_argv) != 0) {
+        fprintf(stderr, "Error running frp client.\n");
+        return 1;
+    }
 
     return 0;
 }

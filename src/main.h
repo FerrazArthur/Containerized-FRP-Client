@@ -5,12 +5,19 @@
 #ifndef CREDENTIALS_PATH
 
 #define CREDENTIALS_PATH "/run/secrets/QUANT1_CREDENTIALS"
+//#define CREDENTIALS_PATH "./.credentials"
 
 #endif
 
 #ifndef SERVER_CONFIG_PATH
 
 #define SERVER_CONFIG_PATH "./server_config"
+
+#endif
+
+#ifndef FRPC_EXECUTABLE_NAME
+
+#define FRPC_EXECUTABLE_NAME "frpc"
 
 #endif
 
