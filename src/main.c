@@ -32,6 +32,9 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+
+    read_server_configuration(SERVER_CONFIG_PATH);
+
     // Search for a client configuration file
     client_toml_tmp = find_pattern_in_path(CONFIG_FILE_SUFFIX, ".");
 
