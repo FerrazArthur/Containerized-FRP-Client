@@ -7,6 +7,41 @@
 
 #include "main_utils.h"
 
+// Read credentials from file and store them in a structure
+void read_store_credentials(struct Credentials *credentials, const char* path) {
+    char line[256];
+    char *token = NULL;
+    FILE *cred_file = fopen(path, "r");
+    if (cred_file == NULL) {
+        fprintf(stderr, "Error opening %s\n", path);
+        exit(EXIT_FAILURE);
+    }
+
+    if (fgets(line, sizeof(line), cred_file) != NULL) {
+        token = strtok(line, " ");
+        if (token != NULL) {
+            strncpy(credentials->user, token, sizeof(credentials->user));
+        }
+
+        token = strtok(NULL, " ");
+        if (token != NULL) {
+            strncpy(credentials->password, token, sizeof(credentials->password));
+        }
+        else {
+            fprintf(stderr, "Error reading %s: password not properly defined.\n", path);
+            fclose(cred_file);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else {
+        fprintf(stderr, "Error reading %s: file is empty.\n", path);
+        fclose(cred_file);
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(cred_file);
+}
+
 char* find_pattern_in_path(const char* pattern, const char* path) {
     // Search path for files that has substr pattern and return first occurrence, return 
     // NULL if not find.

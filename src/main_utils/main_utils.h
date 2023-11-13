@@ -2,6 +2,29 @@
 #define MAIN_UTILS_H
 
 /**
+ * @struct Credentials
+ * @brief Structure to hold credential information.
+ */
+struct Credentials {
+    char user[256];       /**< User credential. */
+    char password[256];   /**< Password credential. */
+};
+
+/**
+ * @brief Read credentials from a file and store them in a structure.
+ *
+ * This function opens a file specified by the given path, reads the first line,
+ * and extracts user and password credentials, storing them in the provided
+ * Credentials structure.
+ *
+ * @param credentials Pointer to a Credentials structure to store the extracted credentials.
+ * @param path Path to the file containing credentials.
+ *
+ * @note Exits the program with EXIT_FAILURE if an error occurs during file operations.
+ */
+void read_store_credentials(struct Credentials *credentials, const char* path);
+
+/**
  * @brief Search for a file with a specific pattern in the given directory path.
  *
  * This function searches for files in the specified directory path that match the provided pattern.

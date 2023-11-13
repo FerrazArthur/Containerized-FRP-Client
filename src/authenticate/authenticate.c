@@ -9,10 +9,9 @@
 #include "authenticate.h"
 #include "auth_utils/auth_utils.h"
 
-int authenticate_quant1_user(char* username, int interactive, FILE *input_stream) {
+int authenticate_quant1_user(char* username, int interactive, char password_stored[256]) {
     // Authenticate user by calling ldapwhoami api.
     // If quant1 ldap server recognize user and password, then user is autenticated.
-    // Interactive calls the ldapwhoami input prompt, while non interactive doest prompt user.
     int output = 0;
     char ldap_username[256];
     char *password = NULL;
@@ -29,11 +28,8 @@ sizeof(ldap_username) - strlen(ldap_username) - 1);
         // Read password
         password = getpass("");
     }
-    else {
-        // Read password
-        char pw_temp[256];
-        fgets(pw_temp, sizeof(pw_temp), input_stream);
-        password = pw_temp;
+    else if (interactive == 0) {
+        password = password_stored;
     }
     if (password == NULL) {
         printf("Error reading password.\n");
