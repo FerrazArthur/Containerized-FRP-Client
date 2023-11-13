@@ -1,0 +1,9 @@
+serverAddr = "194.163.176.185"
+serverPort = 7000
+
+[[proxies]]
+name = "arthur-proxy"
+type = "http"
+localPort = 3000
+localIp = "127.0.0.1"
+customDomains = ["test.frp.quant1.com.br"]
