@@ -4,7 +4,8 @@ This project provides a Docker container image that allows Quant1 developers to 
 
 ## Usage
 
-The intended use of this branch is using Docker Compose and a `.credentials` file, making it easier to manage.
+The intended use of this branch is using Docker Compose, a `.credentials` and a `server_config` file, making it easier to manage.  
+Configuration can be done by adding a `.env` file as in the example `.env.example`.
 
 ### Configuration and deploy
 
@@ -21,7 +22,32 @@ cat > .credentials
 <press ctrl-c>
 ```
 
-#### Configure your proxy
+#### Create server_config file
+
+Create a `server_config` file in the same directory as your `docker-compose.yaml` file. The `server_config` file should contain the server host ip and port, separated by a `:`, for example:
+
+> This file probably already exists and is configured with quant1 frps server ip and port.
+
+```bash
+cat > server_config
+```
+
+```bash
+<frp_server_ip>:<frp_server_port><press enter>
+<press ctrl-c>
+```
+
+#### Configure your proxy inside .env file
+
+Copy the `.env.example` file and rename it with `.env`.  
+It should look like the following:
+
+```bash
+PROXY_NAME="Meu web app"
+PROXY_TYPE="http"
+PROXY_LOCAL_IP=127.0.0.1
+PROXY_LOCAL_PORT=3000
+```
 
 ##### PROXY_NAME
 
@@ -58,7 +84,7 @@ docker compose logs quant1-frp-client
 The service will be available via a url personalized based on your username, obtained by applying a md5sum hash to your quant1 username and appending .cloud.quant1.com.br to it.
 
 ```bash
-printf "arthur" | md5sum | awk '{print $1".cloud.quant1.com.br"}
+printf "<my_quant1_username>" | md5sum | awk '{print $1".cloud.quant1.com.br"}
 ```
 
 <details>
