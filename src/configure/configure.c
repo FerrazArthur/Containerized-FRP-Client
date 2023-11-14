@@ -12,19 +12,20 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
         const char* local_port_value, const char* custom_domain) {
     // Write the configuration file in folder.
     FILE* file = fopen(path, "w");
+
     if (file == NULL) {
         fprintf(stderr, "Error opening the file for writing: %s\n", path);
         return 1;
     }
     
-    fprintf(file, "serverAddr = \"%s\"\n", server_url);
-    fprintf(file, "serverPort = %s\n", server_port);
+    fprintf(file, FRPS_HOST_IP "\"%s\"\n", server_url);
+    fprintf(file, FRPS_HOST_PORT "%s\n", server_port);
     fprintf(file, "\n[[proxies]]\n");
-    fprintf(file, "name = \"%s\"\n", proxy_name);
-    fprintf(file, "type = \"%s\"\n", type_value);
-    fprintf(file, "localPort = %s\n", local_port_value);
-    fprintf(file, "localIp = \"%s\"\n", ip_value);
-    fprintf(file, "customDomains = [\"%s\"]\n", custom_domain);
+    fprintf(file, PROXY_NAME "\"%s\"\n", proxy_name);
+    fprintf(file, PROXY_TYPE "\"%s\"\n", type_value);
+    fprintf(file, PROXY_LOCAL_PORT "%s\n", local_port_value);
+    fprintf(file, PROXY_LOCAL_IP "\"%s\"\n", ip_value);
+    fprintf(file, PROXY_CUSTOM_DOMAIN "[\"%s\"]\n", custom_domain);
     
     fclose(file);
     return 0;
@@ -45,6 +46,7 @@ int configure_frp_client(char* username, int interactive) {
     char default_proxy_name[256];
     char client_toml[256];
     char message[356];
+    char *custom_domain_hash = NULL;
 
     int output = 0;
 
@@ -66,7 +68,7 @@ int configure_frp_client(char* username, int interactive) {
     set_default_if_empty(name_value, default_proxy_name);
 
     snprintf(message, sizeof(message), "Enter the connection type [%s]: ", DEFAULT_PROXY_TYPE);
-    output = get_config_input(type_value, sizeof(type_value), interactive, message, PROXY_TYPE);
+    output = get_config_input(type_value, sizeof(type_value), interactive, message, PROXY_TYPE_ENV);
     if (output != 0) {
         return 1;
     }
@@ -86,11 +88,18 @@ int configure_frp_client(char* username, int interactive) {
     }
     set_default_if_empty(local_port_value, DEFAULT_PROXY_LOCAL_PORT);
 
-    // Generate a custom domain
-    snprintf(custom_domain, sizeof(custom_domain), "test.frp.quant1.com.br");
+    // Generate a user hash for the custom domain
+    output = md5_hash(username, &custom_domain_hash);
+
+    if (output != 0) {
+        fprintf(stderr, "Error while generating the custom domain hash.\n");
+        return 1;
+    }
+
+    // Append the custom domain suffix to the hash
+    snprintf(custom_domain, sizeof(custom_domain), "%s" PROXY_CUSTOM_DOMAIN_SUFFIX, custom_domain_hash);
 
     // Create the configuration file
-
     strcpy(client_toml, username);
     strcat(client_toml, "_client.toml");
 

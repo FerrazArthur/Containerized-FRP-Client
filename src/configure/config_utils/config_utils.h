@@ -2,6 +2,18 @@
 #define CONFIG_UTILS_H
 
 /**
+ * @brief Computes the MD5 hash of the input string and returns the hexadecimal representation.
+ * 
+ * @param input_str The input string to be hashed.
+ * @param output_str The output buffer to store the hexadecimal representation of the hash.
+ *                  Memory is allocated for the output buffer inside the function.
+ * @return 0 on success, 1 on memory allocation error.
+ * @note The returned string is dynamically allocated and should be freed when no longer needed
+ *       to prevent memory leaks.
+ */
+int md5_hash(const char *input_str, char **output_str);
+
+/**
  * @brief Search for a file with a specific pattern in the given directory path.
  *
  * This function searches for files in the specified directory path that match the provided pattern.
