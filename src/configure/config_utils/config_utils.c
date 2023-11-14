@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <stdarg.h>
+#include <openssl/evp.h>
 
 #include "config_utils.h"
 
@@ -28,7 +26,7 @@ int get_config_input(char* destination, size_t size_of_dest, int interactive, ch
     if (interactive == 1) {
         printf("%s", message);
         if (fgets(destination, size_of_dest, stdin) == NULL) {
-            perror("Error reading input.\n");
+            fprintf(stderr, "Error reading input.\n");
             return 1;
         }
     }
