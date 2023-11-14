@@ -76,15 +76,18 @@ void set_default_or_env(char* destination, const char* env_value, const char* de
 /**
  * @brief Get user input and store it in a string, optionally displaying a message.
  *
- * This function reads user input from the standard input (stdin) and stores it in the provided 
- * destination string. 
- * It can also display an optional message to the user before input is collected. 
+ * If the interactive flag is set to 1, this function displays the provided message to the user and
+ * collects input from the user. If the interactive flag is set to 0, this function uses the value
+ * of the provided environment variable as the default value for the input. If the environment
+ * variable is not set or is empty, the function sets the input to an empty string.
  * The function removes the newline character from the input.
  *
  * @param destination The string where the user input will be stored.
  * @param size_of_dest The size of the destination string to prevent buffer overflows.
  * @param interactive A flag indicating whether to display a message to the user (1 for yes, 0 for no).
  * @param message The optional message to display to the user before collecting input.
+ * @param env_variable_name The name of an environment variable to use as the default value for the
+ * input.
  *
  * @return 0 if input is successfully read and stored; 1 in case of an error, such as failure to read 
  * input.

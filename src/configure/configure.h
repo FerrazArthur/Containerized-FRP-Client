@@ -3,16 +3,19 @@
 
 // The default FRPS server IP address.
 #define FRPS_HOST_IP "serverAddr = "
+#define FRPS_HOST_IP_ENV "SERVER_ADDR"
 #define DEFAULT_FRPS_HOST_IP "194.163.176.185"
 
 // The default FRPS server port.
 #define FRPS_HOST_PORT "serverPort = "
+#define FRPS_HOST_PORT_ENV "SERVER_PORT"
 #define DEFAULT_FRPS_HOST_PORT "7000"
 
 // Variáveis para o arquivo de configuração do cliente
 
 #define PROXY_NAME "name = "
 #define PROXY_NAME_ENV "PROXY_NAME"
+#define DEFAULT_PROXY_SUFFIX "-proxy"
 
 // Variáveis com valor default para o arquivo de configuração do cliente
 #define PROXY_TYPE "type = "
