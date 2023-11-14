@@ -1,11 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <stdarg.h>
+#include <openssl/evp.h>
 
 #include "config_utils.h"
+
+int md5_hash(const char* input_str, char** output_str) {
+    // Allocate memory to store the output hash
+    size_t md_size = EVP_MD_size(EVP_md5());
+    unsigned char *out = malloc(md_size);
+    *output_str = malloc(md_size * 2 + 1);
+    
+    if (out == NULL || *output_str == NULL) {
+        fprintf(stderr, "Memory allocation for md5 hash error.\n");
+        return 1;
+    }
+
+    // Hash the input string
+    EVP_MD_CTX *mdctx;
+    const EVP_MD *md_type = EVP_md5(); // md5 hash type
+    mdctx = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(mdctx, md_type, NULL);
+    EVP_DigestUpdate(mdctx, input_str, strlen(input_str));
+    EVP_DigestFinal_ex(mdctx, out, NULL);
+    EVP_MD_CTX_free(mdctx);
+
+    // Convert the hash to a string
+
+    for (size_t i = 0; i < md_size; i++) {
+        sprintf(*output_str + i * 2, "%02x", out[i]);
+    }
+    free(out);
+    
+    return 0;
+}
 
 void set_default_if_empty(char* input, const char* default_value) {
     // If input is empty, set it to default_value
@@ -28,7 +56,7 @@ int get_config_input(char* destination, size_t size_of_dest, int interactive, ch
     if (interactive == 1) {
         printf("%s", message);
         if (fgets(destination, size_of_dest, stdin) == NULL) {
-            perror("Error reading input.\n");
+            fprintf(stderr, "Error reading input.\n");
             return 1;
         }
     }

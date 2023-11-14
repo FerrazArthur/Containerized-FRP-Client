@@ -9,7 +9,7 @@ OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 # Compilation flags
 CC = gcc
 CFLAGS = -Wall -pedantic -Wextra -Werror
-CLINKS = -lldap -llber
+CLINKS = -lldap -llber -lssl -lcrypto
 
 # Executable
 EXECUTABLE = quant1-frpc

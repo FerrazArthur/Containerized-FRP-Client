@@ -2,24 +2,36 @@
 #define CONFIG_H
 
 // The default FRPS server IP address.
+#define FRPS_HOST_IP "serverAddr = "
+#define FRPS_HOST_IP_ENV "SERVER_ADDR"
 #define DEFAULT_FRPS_HOST_IP "194.163.176.185"
 
 // The default FRPS server port.
+#define FRPS_HOST_PORT "serverPort = "
+#define FRPS_HOST_PORT_ENV "SERVER_PORT"
 #define DEFAULT_FRPS_HOST_PORT "7000"
 
 // Variáveis para o arquivo de configuração do cliente
 
-#define PROXY_NAME "PROXY_NAME"
+#define PROXY_NAME "name = "
+#define PROXY_NAME_ENV "PROXY_NAME"
+#define DEFAULT_PROXY_SUFFIX "-proxy"
 
 // Variáveis com valor default para o arquivo de configuração do cliente
-#define PROXY_TYPE "PROXY_TYPE"
+#define PROXY_TYPE "type = "
+#define PROXY_TYPE_ENV "PROXY_TYPE"
 #define DEFAULT_PROXY_TYPE "http"
 
-#define PROXY_LOCAL_IP "PROXY_LOCAL_IP"
+#define PROXY_LOCAL_IP "localIp = "
+#define PROXY_LOCAL_IP_ENV "PROXY_LOCAL_IP"
 #define DEFAULT_PROXY_LOCAL_IP "127.0.0.1"
 
-#define PROXY_LOCAL_PORT "PROXY_LOCAL_PORT"
+#define PROXY_LOCAL_PORT "localPort = "
+#define PROXY_LOCAL_PORT_ENV "PROXY_LOCAL_PORT"
 #define DEFAULT_PROXY_LOCAL_PORT "3000"
+
+#define PROXY_CUSTOM_DOMAIN "customDomains = "
+#define PROXY_CUSTOM_DOMAIN_SUFFIX ".cloud.quant1.com.br"
 
 /**
  * @brief Create an frp client configuration file in TOML format.

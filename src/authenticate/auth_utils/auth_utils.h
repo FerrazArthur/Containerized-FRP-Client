@@ -5,14 +5,14 @@
 int ldap_simple_bind_s(LDAP *ld, const char *who, const char *cred);
 
 /**
- * Tenta autenticar um usuário em um servidor LDAP usando o método de autenticação simples.
+ * Attempts to authenticate a user on an LDAP server using the simple authentication method.
  *
- * @param host_url A url host do servidor LDAP.
- * @param username O nome de usuário para autenticação no servidor LDAP.
- * @param password A senha correspondente ao nome de usuário.
+ * @param host_url The LDAP server's host URL.
+ * @param username The username for authentication on the LDAP server.
+ * @param password The password corresponding to the username.
  *
- * @return Retorna 0 se a autenticação for bem-sucedida, caso contrário, retorna 1.
- *         Além disso, imprime mensagens de erro no console, se houver falhas.
+ * @return Returns 0 if authentication is successful, otherwise returns 1.
+ *         Additionally, prints error messages to the console in case of failures.
  */
 int ldap_authenticate(char* host_url, char* username, char* password);
 
