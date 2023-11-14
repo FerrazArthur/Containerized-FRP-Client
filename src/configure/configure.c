@@ -98,7 +98,8 @@ int configure_frp_client(char* username, int interactive) {
 
     // Append the custom domain suffix to the hash
     snprintf(custom_domain, sizeof(custom_domain), "%s" PROXY_CUSTOM_DOMAIN_SUFFIX, custom_domain_hash);
-
+    free(custom_domain_hash);
+    
     // Create the configuration file
     strcpy(client_toml, username);
     strcat(client_toml, "_client.toml");
