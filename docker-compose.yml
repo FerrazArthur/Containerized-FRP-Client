@@ -4,6 +4,8 @@ services:
     image: registry.quant1.com.br/arthur/quant1-frpc
     build: .
     command: ["-c", "./quant1-frpc"]
+    volumes:
+      - ./server_config:/frp/server_config
     secrets:
       - QUANT1_CREDENTIALS
     environment:
