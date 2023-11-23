@@ -99,10 +99,10 @@ docker compose logs quant1-frp-client -f
 
 ## Acess your service via web
 
-The service will be available via a url personalized based on your username, obtained by applying a md5sum hash to your quant1 username and appending .cloud.quant1.com.br to it.  
+The service will be available via a url personalized based on your username, obtained by your quant1 username appended with .frp.quant1.com.br.
 
 ```bash
-printf "<my_quant1_username>" | md5sum | awk '{print $1".cloud.quant1.com.br"}
+"<my_quant1_username>.frp.quant1.com.br"
 ```
 
 <details>
