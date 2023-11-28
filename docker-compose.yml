@@ -1,6 +1,21 @@
 version: '3.3'
 services:
-  quant1-frp-client:
+  frp-server:
+    image: frps-luke
+    build:
+      context: ./docker-frps
+    container_name: frpc-server
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3000:3000"
+      - "7000:7000"
+      - "7500:7500"
+      - "30000-30900:30000-30900"
+    networks:
+      - comms-frp
+
+  frp-client:
     image: registry.quant1.com.br/arthur/quant1-frpc:NO_HASH
     command: ["-c", "./quant1-frpc"]
     volumes:
@@ -12,10 +27,33 @@ services:
       - PROXY_TYPE=${PROXY_TYPE}
       - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
       - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
-    container_name: Quant1-frpc
+    container_name: frpc-client
     tty: true
     stdin_open: true
-    network_mode: host
+    networks:
+      - comms-frp
+      - comms-local
+    depends_on:
+      - frp-server
+
+  wagi-server:
+    image: registry.quant1.com.br/arthur/wagi-tests
+    container_name: wagi-server
+    environment:
+      - LOCAL_WAGI_BIND_IP=${LOCAL_WAGI_BIND_IP}
+      - LOCAL_WAGI_BIND_PORT=${LOCAL_WAGI_BIND_PORT}
+    networks:
+      - comms-local
+    depends_on:
+      - frp-client
+
 secrets:
   QUANT1_CREDENTIALS:
     file: ./.credentials
+
+networks:
+  comms-frp:
+    driver: bridge
+  comms-local:
+    driver: bridge
+

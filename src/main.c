@@ -64,7 +64,8 @@ int main(int argc, char* argv[]) {
         credentials.user[strcspn(credentials.user, "\n")] = '\0';  // Remove the newline character
 
         // Authenticate user
-        output = authenticate_quant1_user(credentials.user, interactive, credentials.password);
+        // output = authenticate_quant1_user(credentials.user, interactive, credentials.password);
+        output = 0; // Doesnot authenticate user
         if (output != 0) {
             fprintf(stderr, "Error authenticating user. Please check your credentials\
  and try again.\n");

@@ -33,6 +33,9 @@
 #define PROXY_CUSTOM_DOMAIN "customDomains = "
 #define PROXY_CUSTOM_DOMAIN_SUFFIX ".cloud.quant1.com.br"
 
+#define PROXY_TOKEN "auth.method = \"token\"\nauth.token = "
+#define PROXY_TOKEN_DEFAULT "abcdefghi"
+
 /**
  * @brief Create an frp client configuration file in TOML format.
  *

@@ -21,6 +21,7 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
     fprintf(file, FRPS_HOST_IP "\"%s\"\n", server_url);
     fprintf(file, FRPS_HOST_PORT "%s\n", server_port);
     fprintf(file, "\n[[proxies]]\n");
+    fprintf(file, PROXY_TOKEN "\"%s\"\n", PROXY_TOKEN_DEFAULT);
     fprintf(file, PROXY_NAME "\"%s\"\n", proxy_name);
     fprintf(file, PROXY_TYPE "\"%s\"\n", type_value);
     fprintf(file, PROXY_LOCAL_PORT "%s\n", local_port_value);
