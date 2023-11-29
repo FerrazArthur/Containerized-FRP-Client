@@ -1,19 +1,47 @@
 version: '3.3'
 services:
+  cert-script:
+    build:
+      dockerfile: Dockerfile-certbot
+    container_name: cert-script
+    volumes:
+      - etc-ssl:/etc/ssl
+      - etc-nginx:/etc/nginx
+    networks:
+      - comms-certscript
+
   frp-server:
     image: frps-luke
     build:
       context: ./docker-frps
-    container_name: frpc-server
+    container_name: frp-server
     ports:
-      - "80:80"
-      - "443:443"
       - "3000:3000"
       - "7000:7000"
       - "7500:7500"
       - "30000-30900:30000-30900"
     networks:
+      - comms-nginx
       - comms-frp
+
+  nginx-server:
+    image: nginx:alpine
+    container_name: nginx-server
+    volumes:
+      - etc-ssl:/etc/ssl
+      - etc-nginx:/etc/nginx
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - comms-certscript
+      - comms-nginx
+    depends_on:
+      cert-script:
+        condition: service_completed_successfully
+      frp-server:
+        condition: service_started
 
   frp-client:
     image: registry.quant1.com.br/arthur/quant1-frpc:NO_HASH
@@ -27,7 +55,7 @@ services:
       - PROXY_TYPE=${PROXY_TYPE}
       - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
       - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
-    container_name: frpc-client
+    container_name: frp-client
     tty: true
     stdin_open: true
     networks:
@@ -36,6 +64,7 @@ services:
     depends_on:
       - frp-server
 
+  # Server that provides some application via http
   wagi-server:
     image: registry.quant1.com.br/arthur/wagi-tests
     container_name: wagi-server
@@ -56,4 +85,11 @@ networks:
     driver: bridge
   comms-local:
     driver: bridge
+  comms-certscript:
+    driver: bridge
+  comms-nginx:
+    driver: bridge
 
+volumes:
+  etc-ssl:
+  etc-nginx:

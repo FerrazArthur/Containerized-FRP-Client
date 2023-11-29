@@ -1,0 +1,13 @@
+ARG ALPINE_VERSION=3.18.4
+
+FROM alpine:"$ALPINE_VERSION"
+
+RUN apk add --no-cache openssl
+
+COPY build-certfs.sh /build-certfs.sh
+
+RUN chmod +x /build-certfs.sh
+
+ENTRYPOINT [ "sh" ]
+
+CMD ["-c", "/build-certfs.sh"]

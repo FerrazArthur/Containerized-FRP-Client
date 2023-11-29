@@ -3,3 +3,5 @@
 /build/
 quant1_frpc
 /.vscode/
+certs/
+certbot/
