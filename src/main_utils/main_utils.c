@@ -8,36 +8,41 @@
 #include "main_utils.h"
 
 
-void read_server_configuration(const char* path) {
+int read_server_configuration(const char* path, const char* server_addr_env, const char* server_port_env) {
     char line[256];
     char *token = NULL;
     FILE *server_file = fopen(path, "r");
     if (server_file == NULL) {
+        // fprintf(stderr, "Error opening %s: File not found. Configuration will \
+proceed with default value for server's ip and port\n", path);
         fprintf(stderr, "Error opening %s\n", path);
-        exit(EXIT_FAILURE);
+        return 1;
     }
 
     if (fgets(line, sizeof(line), server_file) != NULL) {
         token = strtok(line, ":");
         if (token != NULL) {
-            setenv("FRPS_SERVER_ADDR", token, 1);
+            setenv(server_addr_env, token, 1);
         }
 
         token = strtok(NULL, ":");
         if (token != NULL) {
-            setenv("FRPS_SERVER_PORT", token, 1);
+            setenv(server_port_env, token, 1);
         }
         else {
             fprintf(stderr, "Error reading %s: server host not properly defined.\n", path);
             fclose(server_file);
-            exit(EXIT_FAILURE);
+            return 1;
         }
     }
     else {
         fprintf(stderr, "Error reading %s: file is empty.\n", path);
         fclose(server_file);
-        exit(EXIT_FAILURE);
+        return 1;
+        // exit(EXIT_FAILURE);
     }
+    fclose(server_file);
+    return 0;
 }
 
 // Read credentials from file and store them in a structure

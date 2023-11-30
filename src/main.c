@@ -32,8 +32,13 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    output = read_server_configuration(SERVER_CONFIG_PATH, FRPS_HOST_IP_ENV, \
+            FRPS_HOST_PORT_ENV);
 
-    read_server_configuration(SERVER_CONFIG_PATH);
+    if (output != 0) {
+        fprintf(stderr, "Error opening %s.", SERVER_CONFIG_PATH);
+        exit(EXIT_FAILURE);
+    }
 
     // Search for a client configuration file
     client_toml_tmp = find_pattern_in_path(CONFIG_FILE_SUFFIX, ".");
