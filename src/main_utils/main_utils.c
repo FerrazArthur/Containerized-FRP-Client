@@ -20,12 +20,12 @@ void read_server_configuration(const char* path) {
     if (fgets(line, sizeof(line), server_file) != NULL) {
         token = strtok(line, ":");
         if (token != NULL) {
-            setenv("FRPC_SERVER_ADDR", token, 1);
+            setenv("FRPS_SERVER_ADDR", token, 1);
         }
 
         token = strtok(NULL, ":");
         if (token != NULL) {
-            setenv("FRPC_SERVER_PORT", token, 1);
+            setenv("FRPS_SERVER_PORT", token, 1);
         }
         else {
             fprintf(stderr, "Error reading %s: server host not properly defined.\n", path);
