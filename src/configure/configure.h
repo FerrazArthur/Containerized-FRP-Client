@@ -3,12 +3,12 @@
 
 // The default FRPS server IP address.
 #define FRPS_HOST_IP "serverAddr = "
-#define FRPS_HOST_IP_ENV "SERVER_ADDR"
+#define FRPS_HOST_IP_ENV "FRPS_SERVER_ADDR"
 #define DEFAULT_FRPS_HOST_IP "194.163.176.185"
 
 // The default FRPS server port.
 #define FRPS_HOST_PORT "serverPort = "
-#define FRPS_HOST_PORT_ENV "SERVER_PORT"
+#define FRPS_HOST_PORT_ENV "FRPS_SERVER_PORT"
 #define DEFAULT_FRPS_HOST_PORT "7000"
 
 // Variáveis para o arquivo de configuração do cliente
@@ -31,9 +31,10 @@
 #define DEFAULT_PROXY_LOCAL_PORT "3000"
 
 #define PROXY_CUSTOM_DOMAIN "customDomains = "
-#define PROXY_CUSTOM_DOMAIN_SUFFIX ".cloud.quant1.com.br"
+#define PROXY_CUSTOM_DOMAIN_SUFFIX ".frp.quant1.com.br"
 
 #define PROXY_TOKEN "auth.method = \"token\"\nauth.token = "
+#define PROXY_TOKEN_ENV "FRPS_AUTH_TOKEN"
 #define PROXY_TOKEN_DEFAULT "abcdefghi"
 
 /**
@@ -50,6 +51,7 @@
  * @param type_value The type of connection (e.g., http).
  * @param ip_value The local IP for the proxy.
  * @param local_port_value The local port for the proxy.
+ * @param frps_token The token for frp server authentication.
  * @param custom_domain The custom domain for accessing the local application.
  *
  * @return 0 if the configuration file is successfully created; 1 in case of an error during file 
@@ -61,7 +63,7 @@
 
 int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
         const char* proxy_name, const char* type_value, const char* ip_value, \
-        const char* local_port_value, const char* custom_domain);
+        const char* local_port_value, const char* frps_token, const char* custom_domain);
 
 /**
  * @brief Configure an frp client for a user.

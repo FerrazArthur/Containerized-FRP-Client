@@ -15,14 +15,17 @@ struct Credentials {
  *
  * This function opens a file specified by the given path, reads the first line,
  * and extracts server address and port information, setting the environment variables
- * FRPC_SERVER_ADDR and FRPC_SERVER_PORT.
+ * server_addr_env and server_port_env.
  *
  * @param path Path to the file containing server configuration.
+ * @param server_addr_env Name of the environment variable to store the server address.
+ * @param server_port_env Name of the environment variable to store the server port.
  *
- * @note Exits the program with EXIT_FAILURE if an error occurs during file operations.
+ * @return
+ *   - 0: Indicates successful processing.
+ *   - 1: Indicates an error occurred.
  */
-void read_server_configuration(const char* path);
-
+int read_server_configuration(const char* path, const char* server_addr_env, const char* server_port_env);
 
 /**
  * @brief Read credentials from a file and store them in a structure.

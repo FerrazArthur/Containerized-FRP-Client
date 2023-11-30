@@ -11,10 +11,12 @@ services:
       - comms-certscript
 
   frp-server:
-    image: frps-luke
     build:
-      context: ./docker-frps
+      context: .
+      dockerfile: Dockerfile-frps
     container_name: frp-server
+    # environment:
+    #   - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
     ports:
       - "3000:3000"
       - "7000:7000"
@@ -44,13 +46,17 @@ services:
         condition: service_started
 
   frp-client:
-    image: registry.quant1.com.br/arthur/quant1-frpc:NO_HASH
+    image: test-frpc
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: ["-c", "./quant1-frpc"]
     volumes:
       - ./server_config:/frp/server_config
     secrets:
       - QUANT1_CREDENTIALS
     environment:
+      # - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
       - PROXY_NAME=${PROXY_NAME}
       - PROXY_TYPE=${PROXY_TYPE}
       - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}

@@ -15,22 +15,22 @@ RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"
 && tar xvf frp_"$FRP_VERSION"_"$OS"_"$ARCH".tar.gz \
 && mv frp_"$FRP_VERSION"_"$OS"_"$ARCH" frp \
 && cd frp \
-&& rm frpc frpc.toml LICENSE
-
+&& rm frpc frps.toml frpc.toml LICENSE
 
 # Copies server configuration file
 COPY ./server_config /frp/server_config
+COPY ./frps.toml /frp/frps.toml
 
 # Final image
 FROM alpine:"$ALPINE_VERSION"
 
-RUN addgroup -S -g 10001 quant1_group && adduser -SH -u 10001 -G quant1_group quant1_frp_server
+RUN addgroup -S -g 10001 server_group && adduser -SH -u 10001 -G server_group quant1_frp_server
 
 COPY --from=installer /frp/ /frp/
 
 WORKDIR /frp/
 
-RUN chown -R quant1_frp_server:quant1_group . && chmod 555 frps quant1-frps && mv frps /bin 
+RUN chown -R quant1_frp_server:server_group . && chmod 555 frps && mv frps /bin 
 
 USER quant1_frp_server
 
