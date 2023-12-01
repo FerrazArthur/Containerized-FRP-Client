@@ -1,7 +1,3 @@
-bindAddr = "0.0.0.0"
 bindPort = 7000
-kcpBindPort = 7000
-transport.maxPoolCount = 5
-tls.force = false
+
 vhostHTTPPort = 80
-vhostHTTPSPort = 443
