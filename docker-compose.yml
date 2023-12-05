@@ -1,24 +1,61 @@
 version: '3.3'
 services:
+
+  # DNS server that resolves all *.quant1.com.br to nginx-server
+  dnsmasq:
+    image: andyshinn/dnsmasq
+    cap_add:
+      - NET_ADMIN
+    restart: always
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - ./dns-dev/dnsmasq.conf:/etc/dnsmasq.conf
+    command: --log-facility=-
+    networks:
+      - dns-proxy
+
+  traefik:
+    image: "traefik:v2.2"
+    container_name: "traefik"
+    restart: always
+    command:
+      - "--log.level=ERROR"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./dns-dev/traefik.yml:/etc/traefik/traefik.yml"
+    networks:
+      - dns-proxy
+      - comms-nginx
+
   cert-script:
     build:
       dockerfile: Dockerfile-certbot
+    labels:
+    - "traefik.enable=false"
     container_name: cert-script
     volumes:
       - etc-ssl:/etc/ssl
       - etc-nginx:/etc/nginx
-    networks:
-      - comms-certscript
 
   frp-server:
     build:
       context: .
       dockerfile: Dockerfile-frps
+    labels:
+    - "traefik.enable=false"
     container_name: frp-server
     # environment:
     #   - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
     ports:
-      - "3000:3000"
       - "7000:7000"
       - "7500:7500"
       - "30000-30900:30000-30900"
@@ -28,17 +65,19 @@ services:
 
   nginx-server:
     image: nginx:alpine
+    labels:
+      - traefik.http.routers.nginx-server.rule=Host(`my-app.test`)
+      - "traefik.http.routers.myrouter.tls=true"
     container_name: nginx-server
     volumes:
       - etc-ssl:/etc/ssl
       - etc-nginx:/etc/nginx
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "80:80"
       - "443:443"
     networks:
-      - comms-certscript
       - comms-nginx
+      - dns-proxy
     depends_on:
       cert-script:
         condition: service_completed_successfully
@@ -50,6 +89,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    labels:
+    - "traefik.enable=false"
     command: ["-c", "./quant1-frpc"]
     volumes:
       - ./server_config:/frp/server_config
@@ -74,13 +115,13 @@ services:
   wagi-server:
     image: registry.quant1.com.br/arthur/wagi-tests
     container_name: wagi-server
+    labels:
+    - "traefik.enable=false"
     environment:
       - LOCAL_WAGI_BIND_IP=${LOCAL_WAGI_BIND_IP}
       - LOCAL_WAGI_BIND_PORT=${LOCAL_WAGI_BIND_PORT}
     networks:
       - comms-local
-    depends_on:
-      - frp-client
 
 secrets:
   QUANT1_CREDENTIALS:
@@ -91,9 +132,9 @@ networks:
     driver: bridge
   comms-local:
     driver: bridge
-  comms-certscript:
-    driver: bridge
   comms-nginx:
+    driver: bridge
+  dns-proxy:
     driver: bridge
 
 volumes:

@@ -31,11 +31,11 @@
 #define DEFAULT_PROXY_LOCAL_PORT "3000"
 
 #define PROXY_CUSTOM_DOMAIN "customDomains = "
-#define PROXY_CUSTOM_DOMAIN_SUFFIX ".frp.quant1.com.br"
+#define PROXY_CUSTOM_DOMAIN_SUFFIX ".test"
 
-#define PROXY_TOKEN "auth.method = \"token\"\nauth.token = "
-#define PROXY_TOKEN_ENV "FRPS_AUTH_TOKEN"
-#define PROXY_TOKEN_DEFAULT "abcdefghi"
+// #define PROXY_TOKEN "auth.method = \"token\"\nauth.token = "
+// #define PROXY_TOKEN_ENV "FRPS_AUTH_TOKEN"
+// #define PROXY_TOKEN_DEFAULT "abcdefghi"
 
 /**
  * @brief Create an frp client configuration file in TOML format.
@@ -63,7 +63,7 @@
 
 int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
         const char* proxy_name, const char* type_value, const char* ip_value, \
-        const char* local_port_value, const char* frps_token, const char* custom_domain);
+        const char* local_port_value, const char* custom_domain);
 
 /**
  * @brief Configure an frp client for a user.

@@ -9,10 +9,9 @@
 
 int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
         const char* proxy_name, const char* type_value, const char* ip_value, \
-        const char* local_port_value, const char* frps_token,  const char* custom_domain) {
+        const char* local_port_value, const char* custom_domain) {
     // Write the configuration file in folder.
     FILE* file = fopen(path, "w");
-
     if (file == NULL) {
         fprintf(stderr, "Error opening the file for writing: %s\n", path);
         return 1;
@@ -21,7 +20,7 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
     fprintf(file, FRPS_HOST_IP "\"%s\"\n", server_url);
     fprintf(file, FRPS_HOST_PORT "%s\n", server_port);
     fprintf(file, "\n[[proxies]]\n");
-    fprintf(file, PROXY_TOKEN "\"%s\"\n", frps_token);
+    // fprintf(file, PROXY_TOKEN "\"%s\"\n", frps_token);
     fprintf(file, PROXY_NAME "\"%s\"\n", proxy_name);
     fprintf(file, PROXY_TYPE "\"%s\"\n", type_value);
     fprintf(file, PROXY_LOCAL_PORT "%s\n", local_port_value);
@@ -41,7 +40,7 @@ int configure_frp_client(char* username, int interactive) {
     char server_port[256];
     char name_value[256];
     char type_value[256];
-    char frps_token[256];
+    // char frps_token[256];
     char ip_value[256];
     char local_port_value[256];
     char custom_domain[256];
@@ -90,11 +89,11 @@ int configure_frp_client(char* username, int interactive) {
     }
     set_default_if_empty(local_port_value, DEFAULT_PROXY_LOCAL_PORT);
 
-    snprintf(message, sizeof(message), "Enter the token for frp server authentication [%s]: ", PROXY_TOKEN_DEFAULT);
-    output = get_config_input(frps_token, sizeof(frps_token), interactive, message, PROXY_TOKEN_ENV);
-    if (output != 0) {
-        return 1;
-    }
+    // snprintf(message, sizeof(message), "Enter the token for frp server authentication [%s]: ", PROXY_TOKEN_DEFAULT);
+    // output = get_config_input(frps_token, sizeof(frps_token), interactive, message, PROXY_TOKEN_ENV);
+    // if (output != 0) {
+    //     return 1;
+    // }
 
     // // Generate a user hash for the custom domain
     // output = md5_hash(username, &custom_domain_hash);
@@ -105,7 +104,7 @@ int configure_frp_client(char* username, int interactive) {
     // }
 
     // // Append the custom domain suffix to the username
-    snprintf(custom_domain, sizeof(custom_domain), "%s" PROXY_CUSTOM_DOMAIN_SUFFIX, username);
+    snprintf(custom_domain, sizeof(custom_domain), "my-app" PROXY_CUSTOM_DOMAIN_SUFFIX);
     // free(custom_domain_hash);
     
     // Create the configuration file
@@ -113,7 +112,7 @@ int configure_frp_client(char* username, int interactive) {
     strcat(client_toml, "_client.toml");
 
     output = create_configuration_toml(client_toml, server_url, server_port, name_value, \
-            type_value, ip_value, local_port_value, frps_token, custom_domain);
+            type_value, ip_value, local_port_value, custom_domain);
     if (output == 0){
         // Print configuration
         printf("\nConfiguration completed! Your local application can be accessed \

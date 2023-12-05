@@ -1,3 +1,4 @@
+bindAddr = "0.0.0.0"
 bindPort = 7000
 
 vhostHTTPPort = 80
