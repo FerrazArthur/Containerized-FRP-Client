@@ -29,7 +29,10 @@ RUN make && mv quant1-frpc /frp/
 # Final image
 FROM alpine:"$ALPINE_VERSION"
 
-RUN apk add libldap libressl-dev && addgroup -S -g 10001 quant1_group && adduser -SH -u 10001 -G quant1_group quant1_frp_client
+# Debug tools
+RUN apk add --no-cache curl bind-tools
+
+RUN apk add --no-cache libldap libressl-dev && addgroup -S -g 10001 quant1_group && adduser -SH -u 10001 -G quant1_group quant1_frp_client
 
 COPY --from=installer /frp/ /frp/
 

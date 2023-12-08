@@ -1,0 +1,13 @@
+serverAddr = "frp-server"
+serverPort = 7000
+
+log_file = "./frps.log"
+log_level = "trace"
+log.maxDays = 3
+
+[[proxies]]
+name = "wagi-proxy"
+type = "http"
+localPort = 3000
+localIp = "wagi-server"
+customDomains = ["my-app.test"]

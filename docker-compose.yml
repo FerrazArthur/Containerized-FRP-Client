@@ -53,6 +53,8 @@ services:
     labels:
     - "traefik.enable=false"
     container_name: frp-server
+    volumes:
+      - ./frps.toml:/frp/frps.toml:ro
     # environment:
     #   - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
     ports:
@@ -93,15 +95,16 @@ services:
     - "traefik.enable=false"
     command: ["-c", "./quant1-frpc"]
     volumes:
-      - ./server_config:/frp/server_config
-    secrets:
-      - QUANT1_CREDENTIALS
-    environment:
+      # - ./server_config:/frp/server_config
+      - ./arthur_client.toml:/frp/arthur_client.toml:ro
+    # secrets:
+    #   - QUANT1_CREDENTIALS
+    # environment:
       # - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
-      - PROXY_NAME=${PROXY_NAME}
-      - PROXY_TYPE=${PROXY_TYPE}
-      - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
-      - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
+      # - PROXY_NAME=${PROXY_NAME}
+      # - PROXY_TYPE=${PROXY_TYPE}
+      # - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
+      # - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
     container_name: frp-client
     tty: true
     stdin_open: true
@@ -113,7 +116,8 @@ services:
 
   # Server that provides some application via http
   wagi-server:
-    image: registry.quant1.com.br/arthur/wagi-tests
+    # image: registry.quant1.com.br/arthur/wagi-tests
+    image: wagi-dev
     container_name: wagi-server
     labels:
     - "traefik.enable=false"

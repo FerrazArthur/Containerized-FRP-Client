@@ -19,12 +19,14 @@ RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"
 
 # Copies server configuration file
 COPY ./server_config /frp/server_config
-COPY ./frps.toml /frp/frps.toml
 
 # Final image
 FROM alpine:"$ALPINE_VERSION"
 
 RUN addgroup -S -g 10001 server_group && adduser -SH -u 10001 -G server_group quant1_frp_server
+
+# Debug tools
+RUN apk add --no-cache curl bind-tools
 
 COPY --from=installer /frp/ /frp/
 

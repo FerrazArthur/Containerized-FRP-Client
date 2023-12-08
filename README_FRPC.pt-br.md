@@ -1,6 +1,6 @@
 # Quant1-FRPC
 
-[![en](https://img.shields.io/badge/lang-en-red)](README.md) [![pt-br](https://img.shields.io/badge/lang-pt--br-green)](README.pt-br.md)
+[![en](https://img.shields.io/badge/lang-en-red)](README_FRPC.md) [![pt-br](https://img.shields.io/badge/lang-pt--br-green)](README_FRPC.pt-br.md)
 
 Este projeto fornece uma imagem de contêiner Docker que permite aos desenvolvedores da Quant1 habilitar um proxy reverso personalizado localmente e compartilhar suas aplicações globalmente por meio do servidor FRP da Quant1.
 

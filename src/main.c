@@ -12,80 +12,80 @@
 int main(int argc, char* argv[]) {
     // This code will break if any env variable or parameter passed is longer than 
     // 256 characters
-    char* client_toml_tmp = NULL;
-    char client_toml[256];
+    // char* client_toml_tmp = NULL;
+    char client_toml[256] = "arthur_client.toml";
     const char *run_command_argv[] = {FRPC_EXECUTABLE_NAME, "-c", client_toml, NULL};
     const char *run_command = FRPC_EXECUTABLE_NAME;
-    int interactive = 0;
-    int output = 0;
-    struct Credentials credentials;
+    // int interactive = 0;
+    // int output = 0;
+    // struct Credentials credentials;
 
     // change stdout to not need \n to print.
     setvbuf(stdout, NULL, _IONBF, 0);
 
-    // Process any arguments passed to this function
-    output = read_args(argc, argv, &interactive);
-    if (output == 1) {
-        return 1;
-    }
-    else if (output == 2) {
-        return 0;
-    }
+    // // Process any arguments passed to this function
+    // output = read_args(argc, argv, &interactive);
+    // if (output == 1) {
+    //     return 1;
+    // }
+    // else if (output == 2) {
+    //     return 0;
+    // }
 
-    output = read_server_configuration(SERVER_CONFIG_PATH, FRPS_HOST_IP_ENV, \
-            FRPS_HOST_PORT_ENV);
+//     output = read_server_configuration(SERVER_CONFIG_PATH, FRPS_HOST_IP_ENV, \
+//             FRPS_HOST_PORT_ENV);
 
-    if (output != 0) {
-        exit(EXIT_FAILURE);
-    }
+//     if (output != 0) {
+//         exit(EXIT_FAILURE);
+//     }
 
-    // Search for a client configuration file
-    client_toml_tmp = find_pattern_in_path(CONFIG_FILE_SUFFIX, ".");
+//     // Search for a client configuration file
+//     client_toml_tmp = find_pattern_in_path(CONFIG_FILE_SUFFIX, ".");
 
-    // If a client configuration file was found
-    if (client_toml_tmp != NULL) {
+//     // If a client configuration file was found
+//     if (client_toml_tmp != NULL) {
 
-        strcpy(client_toml, client_toml_tmp);
-        free(client_toml_tmp);
+//         strcpy(client_toml, client_toml_tmp);
+//         free(client_toml_tmp);
 
-        // Extract the username from the file name
-        strcpy(credentials.user, client_toml);
-        remove_extension_from_string(credentials.user, CONFIG_FILE_SUFFIX);
-    }
-    else {
-        // If no client configuration file was found, create one
-        if (interactive == 1){
-            printf("Enter your quant1 username: ");
+//         // Extract the username from the file name
+//         strcpy(credentials.user, client_toml);
+//         remove_extension_from_string(credentials.user, CONFIG_FILE_SUFFIX);
+//     }
+//     else {
+//         // If no client configuration file was found, create one
+//         if (interactive == 1){
+//             printf("Enter your quant1 username: ");
 
-            if (fgets(credentials.user, sizeof(credentials.user), stdin) == NULL) {
-                fprintf(stderr, "Error reading input.\n");
-                return 1;
-            }
-        }
-        else if (interactive == 0) {
-            read_store_credentials(&credentials, CREDENTIALS_PATH);
-        }
-        credentials.user[strcspn(credentials.user, "\n")] = '\0';  // Remove the newline character
+//             if (fgets(credentials.user, sizeof(credentials.user), stdin) == NULL) {
+//                 fprintf(stderr, "Error reading input.\n");
+//                 return 1;
+//             }
+//         }
+//         else if (interactive == 0) {
+//             read_store_credentials(&credentials, CREDENTIALS_PATH);
+//         }
+//         credentials.user[strcspn(credentials.user, "\n")] = '\0';  // Remove the newline character
 
-        // Authenticate user
-        // output = authenticate_quant1_user(credentials.user, interactive, credentials.password);
-        output = 0; // Doesnot authenticate user
-        if (output != 0) {
-            fprintf(stderr, "Error authenticating user. Please check your credentials\
- and try again.\n");
-            return 1;
-        }
+//         // Authenticate user
+//         // output = authenticate_quant1_user(credentials.user, interactive, credentials.password);
+//         output = 0; // Doesnot authenticate user
+//         if (output != 0) {
+//             fprintf(stderr, "Error authenticating user. Please check your credentials\
+//  and try again.\n");
+//             return 1;
+//         }
 
-        // Create the configuration file
-        output = configure_frp_client(credentials.user, interactive);
-        if (output != 0) {
-            fprintf(stderr, "Error creating configuration file.\n");
-            return 1;
-        }
-    }
+//         // Create the configuration file
+//         output = configure_frp_client(credentials.user, interactive);
+//         if (output != 0) {
+//             fprintf(stderr, "Error creating configuration file.\n");
+//             return 1;
+//         }
+//     }
 
-    strncpy(client_toml, credentials.user, sizeof(client_toml));
-    strcat(client_toml, CONFIG_FILE_SUFFIX);
+    // strncpy(client_toml, credentials.user, sizeof(client_toml));
+    // strcat(client_toml, CONFIG_FILE_SUFFIX);
 
     // Run the frpc binary
     printf("Running frp client: \n");
