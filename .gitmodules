@@ -1,3 +1,0 @@
-[submodule "docker-frps"]
-	path = docker-frps
-	url = git@github.com:lukacu/docker-frps.git
