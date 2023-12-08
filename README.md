@@ -6,7 +6,7 @@ This provides a full featured setup for testing frp's server and client. It's in
 
 It comes packed with:
 
-- (dnsmasq) A service for setting up a basic local DNS server in 127.0.0.1 that redirects to traefik service;
+- (dnsmasq) A service for setting up a basic local DNS server in `127.0.0.1` that redirects to traefik service;
 - (traefik) A high level local DNS provider for resolving domain host to docker services with easy configuration with the usage of labels;
 - (nginx-server) A nginx service for redirecting requests and provide autentification;
 - (cert-script) A service with a script for generating self-signed TLS certification;
@@ -16,7 +16,7 @@ It comes packed with:
 
 ## ARCHITECTURE
 
-- The dnsmarq is listening in port 53, and the system resolv must be prioritizing 127.0.0.1. It redirect it's requests for traefik service;
+- The dnsmarq is listening in port 53, and the system resolv must be prioritizing `127.0.0.1`. It redirect it's requests for traefik service;
 - The traefik inspects the docker compose network it's on for the labels of the other servers. It'll ignore most(because of ignore labels) and create a custom domain as my-app.test for nginx;
 - The cert-script executes for generating the self signed certifications then stops;
 - The frp-server execute;
@@ -68,7 +68,7 @@ And then restart the dnsmasq service with:
 docker compose restart dnsmasq -d
 ```
 
-Now you'll only have to change the `/etc/resolv.conf` file and change nameserver to `127.0.0.1`.
+Now you'll only have to change the `/etc/resolv.conf` file and change nameserver to ``127.0.0.1``.
 
 > The systemd-resolved, once restarted, will redefault this file so it's not that big of a deal to edit it.
 
@@ -87,7 +87,7 @@ Into:
 ```bash
 # Some comments
 
-nameserver 127.0.0.1 # CHANGE THISS
+nameserver `127.0.0.1` # CHANGE THISS
 options edns0 trust-ad
 search .
 ```
