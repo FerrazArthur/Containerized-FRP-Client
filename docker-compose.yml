@@ -1,9 +1,10 @@
 version: '3.3'
 services:
 
-  # DNS server that resolves all *.quant1.com.br to nginx-server
+  # Local DNS server that resolves to nginx-server
   dnsmasq:
     image: andyshinn/dnsmasq
+    container_name: "dnsmasq"
     cap_add:
       - NET_ADMIN
     restart: always
@@ -16,6 +17,7 @@ services:
     networks:
       - dns-proxy
 
+  # Network proxy solver to manage docker services and the pseudoTLD
   traefik:
     image: "traefik:v2.2"
     container_name: "traefik"
@@ -32,11 +34,11 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./dns-dev/traefik.yml:/etc/traefik/traefik.yml"
     networks:
       - dns-proxy
       - comms-nginx
 
+  # Script for generating self-signed TLS certificates
   cert-script:
     build:
       dockerfile: Dockerfile-certbot
@@ -47,6 +49,7 @@ services:
       - etc-ssl:/etc/ssl
       - etc-nginx:/etc/nginx
 
+  # The basic frp server
   frp-server:
     build:
       context: .
@@ -66,10 +69,11 @@ services:
       - comms-nginx
       - comms-frp
 
+  # Nginx server for managing local traffic and TLS certifications
   nginx-server:
     image: nginx:alpine
     labels:
-      - traefik.http.routers.nginx-server.rule=Host(`my-app.test`)
+      - traefik.http.routers.nginx-server.rule=Host(`${CUSTOM_APP_URL}`)
       - "traefik.http.routers.myrouter.tls=true"
     container_name: nginx-server
     volumes:
@@ -87,6 +91,7 @@ services:
       frp-server:
         condition: service_started
 
+  # My custom application for providing easy configuration for frp with docker
   frp-client:
     image: test-frpc
     build:
@@ -94,18 +99,18 @@ services:
       dockerfile: Dockerfile
     labels:
     - "traefik.enable=false"
-    command: ["-c", "./quant1-frpc"]
     volumes:
-      # - ./server_config:/frp/server_config
-      - ./arthur_client.toml:/frp/arthur_client.toml:ro
-    # secrets:
-    #   - QUANT1_CREDENTIALS
-    # environment:
+      - ./server_config:/frp/server_config:ro
+      # - ./arthur_client.toml:/frp/arthur_client.toml:ro
+    secrets:
+      - CREDENTIALS
+    environment:
       # - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
-      # - PROXY_NAME=${PROXY_NAME}
-      # - PROXY_TYPE=${PROXY_TYPE}
-      # - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
-      # - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
+      - PROXY_NAME=${PROXY_NAME}
+      - PROXY_TYPE=${PROXY_TYPE}
+      - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
+      - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
+      - CUSTOM_APP_URL=${CUSTOM_APP_URL}
     container_name: frp-client
     tty: true
     stdin_open: true
@@ -117,7 +122,10 @@ services:
 
   # Server that provides some application via http
   wagi-server:
-    image: registry.quant1.com.br/arthur/wagi-tests
+    image: wagi
+    build:
+      context: .
+      dockerfile: application/Dockerfile
     container_name: wagi-server
     labels:
     - "traefik.enable=false"
@@ -128,7 +136,7 @@ services:
       - comms-local
 
 secrets:
-  QUANT1_CREDENTIALS:
+  CREDENTIALS:
     file: ./.credentials
 
 networks:

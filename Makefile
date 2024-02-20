@@ -12,7 +12,7 @@ CFLAGS = -Wall -pedantic -Wextra
 CLINKS = -lldap -llber -lssl -lcrypto
 
 # Executable
-EXECUTABLE = quant1-frpc
+EXECUTABLE = my-frpc
 
 all: $(EXECUTABLE)
 

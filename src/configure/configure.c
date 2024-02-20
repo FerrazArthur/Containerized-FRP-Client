@@ -90,23 +90,18 @@ int configure_frp_client(char* username, int interactive) {
     }
     set_default_if_empty(local_port_value, DEFAULT_PROXY_LOCAL_PORT);
 
+    snprintf(message, sizeof(message), "Enter the local service url [%s]: ", DEFAULT_PROXY_CUSTOM_DOMAIN);
+    output = get_config_input(custom_domain, sizeof(custom_domain), interactive, message, PROXY_CUSTOM_DOMAIN_ENV);
+    if (output != 0) {
+        return 1;
+    }
+    set_default_if_empty(custom_domain, DEFAULT_PROXY_CUSTOM_DOMAIN);
+
     // snprintf(message, sizeof(message), "Enter the token for frp server authentication [%s]: ", PROXY_TOKEN_DEFAULT);
     // output = get_config_input(frps_token, sizeof(frps_token), interactive, message, PROXY_TOKEN_ENV);
     // if (output != 0) {
     //     return 1;
     // }
-
-    // // Generate a user hash for the custom domain
-    // output = md5_hash(username, &custom_domain_hash);
-
-    // if (output != 0) {
-    //     fprintf(stderr, "Error while generating the custom domain hash.\n");
-    //     return 1;
-    // }
-
-    // // Append the custom domain suffix to the username
-    snprintf(custom_domain, sizeof(custom_domain), "my-app" PROXY_CUSTOM_DOMAIN_SUFFIX);
-    // free(custom_domain_hash);
     
     // Create the configuration file
     strcpy(client_toml, username);

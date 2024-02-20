@@ -4,7 +4,7 @@
 // The default FRPS server IP address.
 #define FRPS_HOST_IP "serverAddr = "
 #define FRPS_HOST_IP_ENV "FRPS_SERVER_ADDR"
-#define DEFAULT_FRPS_HOST_IP "194.163.176.185"
+#define DEFAULT_FRPS_HOST_IP "0.0.0.0"
 
 // The default FRPS server port.
 #define FRPS_HOST_PORT "serverPort = "
@@ -31,7 +31,8 @@
 #define DEFAULT_PROXY_LOCAL_PORT "3000"
 
 #define PROXY_CUSTOM_DOMAIN "customDomains = "
-#define PROXY_CUSTOM_DOMAIN_SUFFIX ".test"
+#define PROXY_CUSTOM_DOMAIN_ENV "CUSTOM_APP_URL"
+#define DEFAULT_PROXY_CUSTOM_DOMAIN "my-app.test"
 
 // #define PROXY_TOKEN "auth.method = \"token\"\nauth.token = "
 // #define PROXY_TOKEN_ENV "FRPS_AUTH_TOKEN"
