@@ -135,6 +135,7 @@ services:
     networks:
       - comms-local
 
+# File with user and password information of any given LDAP server, if any (file must exists)
 secrets:
   CREDENTIALS:
     file: ./.credentials
