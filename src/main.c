@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     else {
         // If no client configuration file was found, create one
         if (interactive == 1){
-            printf("Enter your quant1 username: ");
+            printf("Enter your username: ");
 
             if (fgets(credentials.user, sizeof(credentials.user), stdin) == NULL) {
                 fprintf(stderr, "Error reading input.\n");
@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
         credentials.user[strcspn(credentials.user, "\n")] = '\0';  // Remove the newline character
 
         // Authenticate user
-        output = authenticate_quant1_user(credentials.user, interactive, credentials.password);
+        output = authenticate_LDAP_user(credentials.user, interactive, credentials.password);
         if (output != 0) {
             fprintf(stderr, "Error authenticating user. Please check your credentials\
  and try again.\n");

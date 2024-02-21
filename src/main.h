@@ -4,8 +4,7 @@
 #define CONFIG_FILE_SUFFIX "_client.toml"
 #ifndef CREDENTIALS_PATH
 
-#define CREDENTIALS_PATH "/run/secrets/QUANT1_CREDENTIALS"
-//#define CREDENTIALS_PATH "./.credentials"
+#define CREDENTIALS_PATH "/run/secrets/CREDENTIALS"
 
 #endif
 

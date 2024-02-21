@@ -18,7 +18,7 @@ Esse projeto inclui um módulo de autentificação para um servidor LDAP genéri
 
 Para incluir o endereço de um servidor real e passar a usufruir dessa funcionalidade, faça as alterações:
 
-- Substitua o valor da diretiva `LDAP_HOST` em [authenticate.h](/src/authenticate/authenticate.h) para `ldap:YOUR_LDAP_URL:YOUR_LDAP_PORT`;
+- Substitua o valor da diretiva `LDAP_HOST` em [authenticate.h](/src/authenticate/authenticate.h) para `ldap://YOUR_LDAP_URL:YOUR_LDAP_PORT`;
 - Remova os comentários da função `authenticate_LDAP_user` em [authenticate.c](/src/authenticate/authenticate.c).
 
 Crie um arquivo `.credentials` no mesmo diretório do seu arquivo `docker-compose.yaml`.  

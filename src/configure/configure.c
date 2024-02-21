@@ -20,7 +20,9 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
     
     fprintf(file, FRPS_HOST_IP "\"%s\"\n", server_url);
     fprintf(file, FRPS_HOST_PORT "%s\n", server_port);
+    fprintf(file, "log_file = \"/var/log/frps.log\"\nlog_level = \"trace\"\nlog.maxDays = 3");
     fprintf(file, "\n[[proxies]]\n");
+    // fprintf(file, PROXY_TOKEN "\"%s\"\n", frps_token);
     fprintf(file, PROXY_NAME "\"%s\"\n", proxy_name);
     fprintf(file, PROXY_TYPE "\"%s\"\n", type_value);
     fprintf(file, PROXY_LOCAL_PORT "%s\n", local_port_value);
@@ -40,13 +42,14 @@ int configure_frp_client(char* username, int interactive) {
     char server_port[256];
     char name_value[256];
     char type_value[256];
+    // char frps_token[256];
     char ip_value[256];
     char local_port_value[256];
     char custom_domain[256];
     char default_proxy_name[256];
     char client_toml[256];
     char message[356];
-    char *custom_domain_hash = NULL;
+    // char *custom_domain_hash = NULL;
 
     int output = 0;
 
@@ -88,17 +91,30 @@ int configure_frp_client(char* username, int interactive) {
     }
     set_default_if_empty(local_port_value, DEFAULT_PROXY_LOCAL_PORT);
 
-    // Generate a user hash for the custom domain
-    output = md5_hash(username, &custom_domain_hash);
-
+    snprintf(message, sizeof(message), "Enter the local service url [%s]: ", DEFAULT_PROXY_CUSTOM_DOMAIN);
+    output = get_config_input(custom_domain, sizeof(custom_domain), interactive, message, PROXY_CUSTOM_DOMAIN_ENV);
     if (output != 0) {
-        fprintf(stderr, "Error while generating the custom domain hash.\n");
         return 1;
     }
+    set_default_if_empty(custom_domain, DEFAULT_PROXY_CUSTOM_DOMAIN);
 
-    // Append the custom domain suffix to the hash
-    snprintf(custom_domain, sizeof(custom_domain), "%s" PROXY_CUSTOM_DOMAIN_SUFFIX, custom_domain_hash);
-    free(custom_domain_hash);
+    // snprintf(message, sizeof(message), "Enter the token for frp server authentication [%s]: ", PROXY_TOKEN_DEFAULT);
+    // output = get_config_input(frps_token, sizeof(frps_token), interactive, message, PROXY_TOKEN_ENV);
+    // if (output != 0) {
+    //     return 1;
+    // }
+
+    // // Generate a user hash for the custom domain
+    // output = md5_hash(username, &custom_domain_hash);
+    // 
+    // if (output != 0) {
+    //     fprintf(stderr, "Error while generating the custom domain hash.\n");
+    //     return 1;
+    // }
+    // 
+    // // Append the custom domain suffix to the hash
+    // snprintf(custom_domain, sizeof(custom_domain), "%s" PROXY_CUSTOM_DOMAIN_SUFFIX, custom_domain_hash);
+    // free(custom_domain_hash);
     
     // Create the configuration file
     strcpy(client_toml, username);
