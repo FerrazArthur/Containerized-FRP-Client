@@ -1,22 +1,29 @@
-# Quant1-FRPC
+# Cliente FRP
 
 [![en](https://img.shields.io/badge/lang-en-red)](README.md) [![pt-br](https://img.shields.io/badge/lang-pt--br-green)](README.pt-br.md)
 
-This project provides a Docker container image that allows Quant1 developers to enable a personalized reverse proxy locally and share their applications globally via Quant1's FRP server.
+This project provides an easily configurable Docker container image, allowing you to enable a custom reverse proxy locally and share your applications globally through an FRP server.
 
 ## Usage
 
-The intended use of this branch is using Docker Compose, a `.credentials` and a `server_config` file, making it easier to manage.  
+The intended use of this is using Docker Compose, a `.credentials` and a `server_config` file, making it easier to manage.  
 
-Configuration can be done by adding a `.env` file as in the example `.env.example`.  
+Configuration can be done by adding a `.env` file as in the example `.env.example` and a file `.credentials` as in the example `.credentiais.example`.
 
-### Configuration and deploy
+### Configuration
 
 #### Create credentials file
 
+This project includes an authentication module for a generic LDAP server. Any combination of username and password will be valid.
+
+To include the address of a real server and start using this functionality, make the following changes:
+
+- Replace the value of the LDAP_HOST directive in authenticate.h with ldap:YOUR_LDAP_URL:YOUR_LDAP_PORT;
+- Uncomment the authenticate_LDAP_user function in authenticate.c.
+
 Create a `.credentials` file in the same directory as your `docker-compose.yaml` file.  
 
-The `.credentials` file should contain your Quant1 username and password separated by a space, for example:  
+The `.credentials` file should contain your username and password separated by a space, for example:  
 
 ```bash
 cat > .credentials
@@ -31,9 +38,7 @@ cat > .credentials
 
 Create a `server_config` file in the same directory as your `docker-compose.yaml` file.  
 
-The `server_config` file should contain the server host ip and port, separated by a `:`, for example:  
-
-> This file is available within the repository, configured with quant1 frps server ip and port.  
+The `server_config` file should contain the server host ip and port, separated by a `:`, for example:
 
 ```bash
 cat > server_config
@@ -48,20 +53,19 @@ cat > server_config
 
 Copy the `.env.example` file and rename it with `.env`.  
 
-It should look like the following:  
-
 ```bash
-PROXY_NAME="Meu web app"
+PROXY_NAME="My web app"
 PROXY_TYPE="http"
 PROXY_LOCAL_IP=127.0.0.1
 PROXY_LOCAL_PORT=3000
+CUSTOM_APP_URL='my-app.test'
 ```
 
 ##### PROXY_NAME
 
 This is the name of your service to the server, it doest matter to the final user but is how the frps will identify you.  
 
-Default: '"your quant1 user"_proxy'  
+Default: '"your user"_proxy'  
 
 ##### PROXY_TYPE
 
@@ -73,66 +77,18 @@ Default: http
 
 The local ip where your service is running.  
 
-Default is 127.0.0.1(localhost)
+Default: 127.0.0.1(localhost)
 
 ##### PROXY_LOCAL_PORT
 
 The local port of your service.  
 
-Default is 3000
+Default: 3000
+
+##### CUSTOM_APP_URL
+
+The service will be available via this url. It's imperative that this url is valid and exists.
 
 #### Up and go
 
-With the `.env` and the `docker-compose.yml` in the same folder, as well as a `server-config` file if you wish to change the default server URL:port, you can start the app.  
-
-You can start it with  
-
-```bash
-docker compose up -d
-```
-
-> You may want to see the logs to see your service's url address  
-
-```bash
-docker compose logs quant1-frp-client -f
-```
-
-## Acess your service via web
-
-The service will be available via a url personalized based on your username, obtained by your quant1 username appended with .frp.quant1.com.br.
-
-```bash
-"<my_quant1_username>.frp.quant1.com.br"
-```
-
-<details>
-
-<summary> Alternative use method </summary>
-
-## Usage with docker container run
-
-The use described below is to configure it once, and then it can be started or stopped as needed.  
-
-Since the configuration requires user input, a TTY is necessary. However, after the initial configuration, you can stop it and then restart it, and it should function properly in a detached state.  
-
-### Creating the container
-
-```bash
-docker container run --name Quant1-frpc -it --network host registry.quant1.com.br/arthur/quant1-frpc
-```
-
-### Stop/starting it
-
-To stop the execution  
-
-```bash
-docker container stop Quant1-frpc
-```
-
-To restart the execution
-
-```bash
-docker container start Quant1-frpc
-```
-
-</details>
+You can check how it's supposed to be used in the `test-environment` branch, witch provide a frp server and a pseudoTLD server as "up and go" docker services.
