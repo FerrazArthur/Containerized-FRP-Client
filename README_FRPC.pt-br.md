@@ -1,4 +1,4 @@
-# FRPC Client
+# FRP Client
 
 [![en](https://img.shields.io/badge/lang-en-red)](README_FRPC.md) [![pt-br](https://img.shields.io/badge/lang-pt--br-green)](README_FRPC.pt-br.md)
 
