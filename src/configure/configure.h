@@ -33,6 +33,10 @@
 #define PROXY_CUSTOM_DOMAIN_ENV "CUSTOM_APP_URL"
 #define DEFAULT_PROXY_CUSTOM_DOMAIN "my-app.test"
 
+// #define PROXY_TOKEN "auth.method = \"token\"\nauth.token = "
+// #define PROXY_TOKEN_ENV "FRPS_AUTH_TOKEN"
+// #define PROXY_TOKEN_DEFAULT "abcdefghi"
+
 /**
  * @brief Create an frp client configuration file in TOML format.
  *
