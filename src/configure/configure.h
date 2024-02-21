@@ -11,13 +11,12 @@
 #define FRPS_HOST_PORT_ENV "FRPS_SERVER_PORT"
 #define DEFAULT_FRPS_HOST_PORT "7000"
 
-// Variáveis para o arquivo de configuração do cliente
-
+// Client configuration file variables
 #define PROXY_NAME "name = "
 #define PROXY_NAME_ENV "PROXY_NAME"
 #define DEFAULT_PROXY_SUFFIX "-proxy"
 
-// Variáveis com valor default para o arquivo de configuração do cliente
+// The default proxy type.
 #define PROXY_TYPE "type = "
 #define PROXY_TYPE_ENV "PROXY_TYPE"
 #define DEFAULT_PROXY_TYPE "http"

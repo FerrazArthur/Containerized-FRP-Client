@@ -18,8 +18,8 @@ This project includes an authentication module for a generic LDAP server. Any co
 
 To include the address of a real server and start using this functionality, make the following changes:
 
-- Replace the value of the LDAP_HOST directive in authenticate.h with ldap:YOUR_LDAP_URL:YOUR_LDAP_PORT;
-- Uncomment the authenticate_LDAP_user function in authenticate.c.
+- Replace the value of the `LDAP_HOST` directive in [authenticate.h](/src/authenticate/authenticate.h) with `ldap://YOUR_LDAP_URL:YOUR_LDAP_PORT`;
+- Uncomment the `authenticate_LDAP_user` function in [authenticate.c](/src/authenticate/authenticate.c).
 
 Create a `.credentials` file in the same directory as your `docker-compose.yaml` file.  
 

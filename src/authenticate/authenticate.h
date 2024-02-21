@@ -3,7 +3,7 @@
 
 // LDAPHOST is the address of the LDAP server used for authentication.
 // Update this value to match the LDAP server's address.
-#define LDAP_HOST "ldap:URL:PORT"
+#define LDAP_HOST "ldap://URL:PORT"
 
 /**
  * @brief Authenticate a user against the LDAP server.
