@@ -58,7 +58,7 @@ services:
     - "traefik.enable=false"
     container_name: frp-server
     volumes:
-      - ./frps.toml:/frp/frps.toml:ro
+      - ./test-env-config/frps.toml:/frp/frps.toml:ro # This allow for quick configuration of the frp server
     # environment:
     #   - FRPS_AUTH_TOKEN=${FRPS_AUTH_TOKEN}
     ports:
@@ -79,7 +79,7 @@ services:
     volumes:
       - etc-ssl:/etc/ssl
       - etc-nginx:/etc/nginx
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./test-env-config/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "443:443"
     networks:
@@ -101,7 +101,6 @@ services:
     - "traefik.enable=false"
     volumes:
       - ./server_config:/frp/server_config:ro
-      # - ./arthur_client.toml:/frp/arthur_client.toml:ro
     secrets:
       - CREDENTIALS
     environment:

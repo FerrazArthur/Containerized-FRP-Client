@@ -18,7 +18,7 @@ RUN wget https://github.com/fatedier/frp/releases/download/v"$FRP_VERSION"/frp_"
 && rm frpc frps.toml frpc.toml LICENSE
 
 # Copies server configuration file
-COPY ./frps.toml /frp/frps.toml
+COPY ./test-env-config/frps.toml /frp/frps.toml
 
 # Final image
 FROM alpine:"$ALPINE_VERSION"

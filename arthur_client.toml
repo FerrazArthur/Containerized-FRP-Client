@@ -1,9 +1,0 @@
-serverAddr = "frp-server"
-serverPort = 7000
-
-[[proxies]]
-name = "wagi-proxy"
-type = "http"
-localPort = 3000
-localIp = "wagi-server"
-customDomains = ["my-app.test"]
