@@ -47,7 +47,7 @@ user password
 
 ```
 
-### SETUP
+### Setup
 
 Para executar o ambiente, siga as etapas:  
 
@@ -107,7 +107,7 @@ search .
 
 </details>
 
-### TESTANDO
+### Testando
 
 Você pode simplesmente usar o curl, com a opção `-k` para aceitar certificados não confiáveis e receber uma resposta para o servidor wagi, como está configurado.
 

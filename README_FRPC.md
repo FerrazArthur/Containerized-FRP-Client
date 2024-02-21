@@ -1,10 +1,10 @@
-# Cliente FRP
+# FRP CLIENT
 
 [![en](https://img.shields.io/badge/lang-en-red)](README_FRPC.md) [![pt-br](https://img.shields.io/badge/lang-pt--br-green)](README_FRPC.pt-br.md)
 
 This project provides an easily configurable Docker container image, allowing you to enable a custom reverse proxy locally and share your applications globally through an FRP server.
 
-## Usage
+## USAGE
 
 The intended use of this is using Docker Compose, a `.credentials` and a `server_config` file, making it easier to manage.  
 

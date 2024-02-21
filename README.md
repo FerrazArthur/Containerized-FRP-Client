@@ -47,7 +47,7 @@ user password
 
 ```
 
-### SETUP
+### Setup
 
 To run it, follow the steps:  
 
@@ -107,7 +107,7 @@ search .
 
 </details>
 
-### TESTING
+### Testing
 
 You can simply curl, with option `-k` for accepting untrusted certificated and receive a response. for wagi server such as it's configured.
 
