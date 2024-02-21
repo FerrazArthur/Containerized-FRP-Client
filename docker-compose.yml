@@ -1,21 +1,22 @@
 version: '3.3'
 services:
-  quant1-frp-client:
-    image: registry.quant1.com.br/arthur/quant1-frpc:NO_HASH
-    command: ["-c", "./quant1-frpc"]
+  frp-client:
+    image: frp-client
+    command: ["-c", "./my-frpc"]
     volumes:
       - ./server_config:/frp/server_config
     secrets:
-      - QUANT1_CREDENTIALS
+      - CREDENTIALS
     environment:
       - PROXY_NAME=${PROXY_NAME}
       - PROXY_TYPE=${PROXY_TYPE}
       - PROXY_LOCAL_IP=${PROXY_LOCAL_IP}
       - PROXY_LOCAL_PORT=${PROXY_LOCAL_PORT}
-    container_name: Quant1-frpc
+      - CUSTOM_APP_URL=${CUSTOM_APP_URL}
+    container_name: my-frp-client
     tty: true
     stdin_open: true
     network_mode: host
 secrets:
-  QUANT1_CREDENTIALS:
+  CREDENTIALS:
     file: ./.credentials

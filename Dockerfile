@@ -24,21 +24,21 @@ COPY Makefile Makefile
 # Copies server configuration file
 COPY ./server_config /frp/server_config
 
-RUN make && mv quant1-frpc /frp/
+RUN make && mv my-frpc /frp/
 
 # Final image
 FROM alpine:"$ALPINE_VERSION"
 
-RUN apk add libldap libressl-dev && addgroup -S -g 10001 quant1_group && adduser -SH -u 10001 -G quant1_group quant1_frp_client
+RUN apk add libldap libressl-dev && addgroup -S -g 10001 frp_group && adduser -SH -u 10001 -G frp_group frp_client
 
 COPY --from=installer /frp/ /frp/
 
 WORKDIR /frp/
 
-RUN chown -R quant1_frp_client:quant1_group . && chmod 555 frpc quant1-frpc && mv frpc /bin 
+RUN chown -R frp_client:frp_group . && chmod 555 frpc my-frpc && mv frpc /bin 
 
-USER quant1_frp_client
+USER frp_client
 
 ENTRYPOINT [ "sh" ]
 
-CMD [ "-c", "./quant1-frpc -i" ]
+CMD [ "-c", "./my-frpc -i" ]
