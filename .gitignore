@@ -1,7 +1,7 @@
 .credentials
 .env
 /build/
-quant1_frpc
+my_frpc
 /.vscode/
 certs/
 certbot/
