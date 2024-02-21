@@ -24,11 +24,11 @@ It includes:
 - The frp-client receives frp-server proxied requests;
 - The wagi-server doest have or is a dependecy and provides a simple web response, acessible via frp-client.
 
-### FRP client configuration
+## CONFIGURATIONS
 
-[README](README_FRPC.md)
+[FRP client configuration](README_FRPC.md)
 
-## ENV
+Create a `.env` file with the following content
 
 ```.env
 PROXY_NAME="wagi-proxy"
@@ -38,6 +38,13 @@ PROXY_LOCAL_PORT=3000
 LOCAL_WAGI_BIND_PORT=3000
 LOCAL_WAGI_BIND_IP=0.0.0.0
 CUSTOM_APP_URL='my-app.test'
+```
+
+Create a `.credentials` file with the following content
+
+```.credentials
+user password
+
 ```
 
 ### SETUP
