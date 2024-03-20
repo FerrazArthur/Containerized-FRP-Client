@@ -1,9 +1,0 @@
-terminal:
-  image: alpine
-  before_script:
-    - apk add alpine-sdk make
-terminal:
-  image: alpine
-  before_script:
-    - apk add alpine-sdk make
-  script: sh
