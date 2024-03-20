@@ -35,10 +35,10 @@ jobs:
 
       - name: Build and push certbot-script image
         run: |
-          docker build -t ghcr.io/${REPOSITORY_LC}:certbot-script -f ./Dockerfile.certbot
+          docker build -t ghcr.io/${REPOSITORY_LC}:certbot-script -f ./Dockerfile.certbot .
           docker push ghcr.io/${REPOSITORY_LC}:certbot-script
 
       - name: Build and push frp-server image
         run: |  
-          docker build -t ghcr.io/${REPOSITORY_LC}:frp-server -f ./Dockerfile.frps
+          docker build -t ghcr.io/${REPOSITORY_LC}:frp-server -f ./Dockerfile.frps .
           docker push ghcr.io/${REPOSITORY_LC}:frp-server
