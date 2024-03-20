@@ -16,8 +16,7 @@ int authenticate_LDAP_user(char* username, int interactive, char password_stored
     printf("Authenticating user %s...\n", username);
 //     strncpy(ldap_username, "cn=", sizeof(ldap_username));
 //     strncat(ldap_username, username, sizeof(ldap_username) - strlen(ldap_username) - 1);
-//     strncat(ldap_username, ",ou=users,dc=ldap,dc=quant1,dc=com,dc=br", \
-// sizeof(ldap_username) - strlen(ldap_username) - 1);
+//     strncat(ldap_username, ",ou=users,dc=ldap,dc=quant1,dc=com,dc=br", sizeof(ldap_username) - strlen(ldap_username) - 1);
 
 //     if (interactive == 1) {
 //         printf("Insira a senha de acesso: ");

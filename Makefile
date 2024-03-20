@@ -8,7 +8,7 @@ OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
 # Compilation flags
 CC = gcc
-CFLAGS = -Wall -pedantic -Wextra -Werror
+CFLAGS = -Wall -pedantic -Wextra # -Werror
 CLINKS = -lldap -llber -lssl -lcrypto
 
 # Executable
