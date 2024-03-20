@@ -1,0 +1,48 @@
+name: Docker Build Test Environment
+
+on:
+  push:
+    branches:
+      - 'test-environment'
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: set lower case repository
+        run: |
+          echo "REPOSITORY_LC=${REPOSITORY,,}" >>${GITHUB_ENV}
+        env:
+          REPOSITORY: '${{ github.repository }}'
+
+      - name: Build and push frp-client image
+        run: |
+          docker build -t ghcr.io/${REPOSITORY_LC}:frp-client-test .
+          docker push ghcr.io/${REPOSITORY_LC}:frp-client-test
+
+      - name: Build and push certbot-script image
+        run: |
+          if [ ${{ github.ref }} == 'refs/heads/test-environment' ]; then
+          docker build -t ghcr.io/${REPOSITORY_LC}:certbot-script -f ./Dockerfile.certbot
+          docker push ghcr.io/${REPOSITORY_LC}:certbot-script
+          fi
+
+      - name: Build and push frp-server image
+        run: |  
+          if [ ${{ github.ref }} == 'refs/heads/test-environment' ]; then
+            docker build -t ghcr.io/${REPOSITORY_LC}:frp-server -f ./Dockerfile.frps
+            docker push ghcr.io/${REPOSITORY_LC}:frp-server
+          fi

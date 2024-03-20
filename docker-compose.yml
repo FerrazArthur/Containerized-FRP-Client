@@ -40,8 +40,9 @@ services:
 
   # Script for generating self-signed TLS certificates
   cert-script:
+    image: ghcr.io/ferrazarthur/containerized-frp-client:certbot-script
     build:
-      dockerfile: Dockerfile-certbot
+      dockerfile: Dockerfile.certbot
     labels:
     - "traefik.enable=false"
     container_name: cert-script
@@ -51,9 +52,10 @@ services:
 
   # The basic frp server
   frp-server:
+    image: ghcr.io/ferrazarthur/containerized-frp-client:frp-server
     build:
       context: .
-      dockerfile: Dockerfile-frps
+      dockerfile: Dockerfile.frps
     labels:
     - "traefik.enable=false"
     container_name: frp-server
@@ -93,7 +95,7 @@ services:
 
   # My custom application for providing easy configuration for frp with docker
   frp-client:
-    image: test-frpc
+    image: ghcr.io/ferrazarthur/containerized-frp-client:frp-client-test
     build:
       context: .
       dockerfile: Dockerfile
