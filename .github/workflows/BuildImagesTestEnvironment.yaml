@@ -35,14 +35,10 @@ jobs:
 
       - name: Build and push certbot-script image
         run: |
-          if [ ${{ github.ref }} == 'refs/heads/test-environment' ]; then
           docker build -t ghcr.io/${REPOSITORY_LC}:certbot-script -f ./Dockerfile.certbot
           docker push ghcr.io/${REPOSITORY_LC}:certbot-script
-          fi
 
       - name: Build and push frp-server image
         run: |  
-          if [ ${{ github.ref }} == 'refs/heads/test-environment' ]; then
-            docker build -t ghcr.io/${REPOSITORY_LC}:frp-server -f ./Dockerfile.frps
-            docker push ghcr.io/${REPOSITORY_LC}:frp-server
-          fi
+          docker build -t ghcr.io/${REPOSITORY_LC}:frp-server -f ./Dockerfile.frps
+          docker push ghcr.io/${REPOSITORY_LC}:frp-server
