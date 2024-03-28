@@ -37,23 +37,23 @@ int configure_frp_client(char* username, int interactive) {
     const char* server_url_const = getenv(FRPS_HOST_IP_ENV);
     const char* server_port_const = getenv(FRPS_HOST_PORT_ENV);
 
-    char server_url[256];
-    char server_port[256];
-    char name_value[256];
-    char type_value[256];
-    // char frps_token[256];
-    char ip_value[256];
-    char local_port_value[256];
-    char custom_domain[256];
-    char default_proxy_name[256];
-    char client_toml[256];
-    char message[356];
+    char server_url[SIMPLE_CHAR_SIZE];
+    char server_port[SIMPLE_CHAR_SIZE];
+    char name_value[SIMPLE_CHAR_SIZE];
+    char type_value[SIMPLE_CHAR_SIZE];
+    // char frps_token[SIMPLE_CHAR_SIZE];
+    char ip_value[SIMPLE_CHAR_SIZE];
+    char local_port_value[SIMPLE_CHAR_SIZE];
+    char custom_domain[SIMPLE_CHAR_SIZE];
+    char default_proxy_name[SIMPLE_CHAR_SIZE];
+    char client_toml[SIMPLE_CHAR_SIZE];
+    char message[MESSAGE_SIZE];
     // char *custom_domain_hash = NULL;
 
     int output = 0;
 
-    strcpy(default_proxy_name, username);
-    strcat(default_proxy_name, DEFAULT_PROXY_SUFFIX);
+    strncpy(default_proxy_name, username, SIMPLE_CHAR_SIZE);
+    strncat(default_proxy_name, DEFAULT_PROXY_SUFFIX, SIMPLE_CHAR_SIZE - strlen(default_proxy_name));
 
     // Check if the SERVER_ADDR environment variable is empty. If it is, default it.
     set_default_or_env(server_url, server_url_const, DEFAULT_FRPS_HOST_IP);
@@ -62,50 +62,50 @@ int configure_frp_client(char* username, int interactive) {
 
     // Customize the client proxy file
 
-    snprintf(message, sizeof(message), "Enter a name for the proxy [%s]: ", default_proxy_name);
+    snprintf(message, MESSAGE_SIZE, "Enter a name for the proxy [%s]: ", default_proxy_name);
     output = get_config_input(name_value, sizeof(name_value), interactive, message, PROXY_NAME_ENV);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(name_value, default_proxy_name);
 
-    snprintf(message, sizeof(message), "Enter the connection type [%s]: ", DEFAULT_PROXY_TYPE);
+    snprintf(message, MESSAGE_SIZE, "Enter the connection type [%s]: ", DEFAULT_PROXY_TYPE);
     output = get_config_input(type_value, sizeof(type_value), interactive, message, PROXY_TYPE_ENV);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(type_value, DEFAULT_PROXY_TYPE);
 
-    snprintf(message, sizeof(message), "Enter the local IP [%s]: ", DEFAULT_PROXY_LOCAL_IP);
+    snprintf(message, MESSAGE_SIZE, "Enter the local IP [%s]: ", DEFAULT_PROXY_LOCAL_IP);
     output = get_config_input(ip_value, sizeof(ip_value), interactive, message, PROXY_LOCAL_IP_ENV);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(ip_value, DEFAULT_PROXY_LOCAL_IP);
 
-    snprintf(message, sizeof(message), "Enter the local port [%s]: ", DEFAULT_PROXY_LOCAL_PORT);
+    snprintf(message, MESSAGE_SIZE, "Enter the local port [%s]: ", DEFAULT_PROXY_LOCAL_PORT);
     output = get_config_input(local_port_value, sizeof(local_port_value), interactive, message, PROXY_LOCAL_PORT_ENV);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(local_port_value, DEFAULT_PROXY_LOCAL_PORT);
 
-    snprintf(message, sizeof(message), "Enter the local service url [%s]: ", DEFAULT_PROXY_CUSTOM_DOMAIN);
+    snprintf(message, MESSAGE_SIZE, "Enter the local service url [%s]: ", DEFAULT_PROXY_CUSTOM_DOMAIN);
     output = get_config_input(custom_domain, sizeof(custom_domain), interactive, message, PROXY_CUSTOM_DOMAIN_ENV);
     if (output != 0) {
         return 1;
     }
     set_default_if_empty(custom_domain, DEFAULT_PROXY_CUSTOM_DOMAIN);
 
-    // snprintf(message, sizeof(message), "Enter the token for frp server authentication [%s]: ", PROXY_TOKEN_DEFAULT);
+    // snprintf(message, MESSAGE_SIZE, "Enter the token for frp server authentication [%s]: ", PROXY_TOKEN_DEFAULT);
     // output = get_config_input(frps_token, sizeof(frps_token), interactive, message, PROXY_TOKEN_ENV);
     // if (output != 0) {
     //     return 1;
     // }
     
     // Create the configuration file
-    strcpy(client_toml, username);
-    strcat(client_toml, "_client.toml");
+    strncpy(client_toml, username, SIMPLE_CHAR_SIZE);
+    strncat(client_toml, "_client.toml", SIMPLE_CHAR_SIZE - strlen(client_toml));
 
     output = create_configuration_toml(client_toml, server_url, server_port, name_value, \
             type_value, ip_value, local_port_value, custom_domain);

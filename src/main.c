@@ -11,9 +11,9 @@
 
 int main(int argc, char* argv[]) {
     // This code will break if any env variable or parameter passed is longer than 
-    // 256 characters
+    // SIMPLE_CHAR_SIZE characters
     char* client_toml_tmp = NULL;
-    char client_toml[256] = "";
+    char client_toml[SIMPLE_CHAR_SIZE] = "";
     const char *run_command_argv[] = {FRPC_EXECUTABLE_NAME, "-c", client_toml, NULL};
     const char *run_command = FRPC_EXECUTABLE_NAME;
     int interactive = 0;
@@ -45,11 +45,11 @@ int main(int argc, char* argv[]) {
     // If a client configuration file was found
     if (client_toml_tmp != NULL) {
 
-        strcpy(client_toml, client_toml_tmp);
+        strncpy(client_toml, client_toml_tmp, SIMPLE_CHAR_SIZE);
         free(client_toml_tmp);
 
         // Extract the username from the file name
-        strcpy(credentials.user, client_toml);
+        strncpy(credentials.user, client_toml, SIMPLE_CHAR_SIZE);
         remove_extension_from_string(credentials.user, CONFIG_FILE_SUFFIX);
     }
     else {
@@ -83,8 +83,8 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    strncpy(client_toml, credentials.user, sizeof(client_toml));
-    strcat(client_toml, CONFIG_FILE_SUFFIX);
+    strncpy(client_toml, credentials.user, SIMPLE_CHAR_SIZE);
+    strncat(client_toml, CONFIG_FILE_SUFFIX, SIMPLE_CHAR_SIZE - strlen(client_toml));
 
     // Run the frpc binary
     printf("Running frp client: \n");

@@ -7,11 +7,11 @@
 #include "authenticate.h"
 #include "auth_utils/auth_utils.h"
 
-int authenticate_LDAP_user(char* username, int interactive, char password_stored[256]) {
+int authenticate_LDAP_user(char* username, int interactive, char password_stored[SIMPLE_CHAR_SIZE]) {
     // Authenticate user by calling ldapwhoami api.
     // If the ldap server recognize user and password, then user is autenticated.
 //     int output = 0;
-//     char ldap_username[256];
+//     char ldap_username[SIMPLE_CHAR_SIZE];
 //     char *password = NULL;
     printf("Authenticating user %s...\n", username);
 //     strncpy(ldap_username, "cn=", sizeof(ldap_username));

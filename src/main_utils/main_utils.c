@@ -8,7 +8,7 @@
 #include "main_utils.h"
 
 int read_server_configuration(const char* path, const char* server_addr_env, const char* server_port_env) {
-    char line[256];
+    char line[SIMPLE_CHAR_SIZE];
     char *token = NULL;
     FILE *server_file = fopen(path, "r");
     if (server_file == NULL) {
@@ -43,7 +43,7 @@ int read_server_configuration(const char* path, const char* server_addr_env, con
 
 // Read credentials from file and store them in a structure
 void read_store_credentials(struct Credentials *credentials, const char* path) {
-    char line[256];
+    char line[SIMPLE_CHAR_SIZE];
     char *token = NULL;
     FILE *cred_file = fopen(path, "r");
     if (cred_file == NULL) {
@@ -54,12 +54,12 @@ void read_store_credentials(struct Credentials *credentials, const char* path) {
     if (fgets(line, sizeof(line), cred_file) != NULL) {
         token = strtok(line, " ");
         if (token != NULL) {
-            strncpy(credentials->user, token, sizeof(credentials->user));
+            strncpy(credentials->user, token, SIMPLE_CHAR_SIZE);
         }
 
         token = strtok(NULL, " ");
         if (token != NULL) {
-            strncpy(credentials->password, token, sizeof(credentials->password));
+            strncpy(credentials->password, token, SIMPLE_CHAR_SIZE);
         }
         else {
             fprintf(stderr, "Error reading %s: password not properly defined.\n", path);
@@ -96,8 +96,7 @@ char* find_pattern_in_path(const char* pattern, const char* path) {
             // Check if the file name matches the pattern "*_client.toml"
             if (strstr(entry->d_name, pattern) != NULL) {
                 client_toml = malloc(strlen(entry->d_name) + 1);
-                strcpy(client_toml, entry->d_name);
-
+                strncpy(client_toml, entry->d_name, SIMPLE_CHAR_SIZE);
                 closedir(dp);
                 return client_toml;
             }
@@ -117,17 +116,17 @@ void remove_extension_from_string(char* name, char* extension) {
 }
 
 int process_arg(char* arg, int *interactive) {
-    char *message = "Uso: quant1_frpc [OPÇÕES]\n"
+    const char *message = "Uso: quant1_frpc [OPÇÕES]\n"
     "Autentica o usuário, configura um cliente de proxy reverso rápido e o inicia.\n\n"
     "Opções:\n"
     "  --help, -h          Exibe esta mensagem de ajuda\n"
     "  --interactive, -i   Executa interativamente, solicitando informações \
 conforme configura o arquivo e realiza a autenticação\n";
-    if (strcmp(arg, "help") == 0 || strcmp(arg, "h") == 0) {
+    if (strncmp(arg, "help", SIMPLE_CHAR_SIZE) == 0 || strncmp(arg, "h", SIMPLE_CHAR_SIZE) == 0) {
         printf("%s", message);
         return 2;
     }
-    else if (strcmp(arg, "interactive") == 0 || strcmp(arg, "i") == 0) {
+    else if (strncmp(arg, "interactive", SIMPLE_CHAR_SIZE) == 0 || strncmp(arg, "i", SIMPLE_CHAR_SIZE) == 0) {
         *interactive = 1;
         return 0;
     }

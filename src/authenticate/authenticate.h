@@ -5,6 +5,11 @@
 // Update this value to match the LDAP server's address.
 #define LDAP_HOST "ldap://URL:PORT"
 
+// The sizes of the char arrays used to store configuration values.
+# ifndef SIMPLE_CHAR_SIZE
+# define SIMPLE_CHAR_SIZE 256
+# endif
+
 /**
  * @brief Authenticate a user against the LDAP server.
  *

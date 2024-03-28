@@ -1,6 +1,16 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// The sizes of the char arrays used to store configuration values.
+# ifndef SIMPLE_CHAR_SIZE
+# define SIMPLE_CHAR_SIZE 256
+# endif
+
+// The size of the char array used to store messages.
+# ifndef MESSAGE_SIZE
+# define MESSAGE_SIZE 356
+# endif
+
 // The default FRPS server IP address.
 #define FRPS_HOST_IP "serverAddr = "
 #define FRPS_HOST_IP_ENV "FRPS_SERVER_ADDR"

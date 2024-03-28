@@ -1,0 +1,11 @@
+serverAddr = "frp-server"
+serverPort = 7000
+log_file = "/var/log/frps.log"
+log_level = "trace"
+log.maxDays = 3
+[[proxies]]
+name = "user-proxy"
+type = "http"
+localPort = 3000
+localIp = "127.0.0.1"
+customDomains = ["my-app.test"]

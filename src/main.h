@@ -8,6 +8,16 @@
 
 #endif
 
+// The sizes of the char arrays used to store configuration values.
+# ifndef SIMPLE_CHAR_SIZE
+# define SIMPLE_CHAR_SIZE 256
+# endif
+
+// The size of the char array used to store messages.
+# ifndef MESSAGE_SIZE
+# define MESSAGE_SIZE 356
+# endif
+
 #ifndef SERVER_CONFIG_PATH
 
 #define SERVER_CONFIG_PATH "./server_config"
