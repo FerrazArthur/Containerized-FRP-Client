@@ -6,6 +6,6 @@ log.maxDays = 3
 [[proxies]]
 name = "user-proxy"
 type = "http"
-localPort = 3000
-localIp = "127.0.0.1"
+localPort = 22
+localIp = "0.0.0.0"
 customDomains = ["my-app.test"]

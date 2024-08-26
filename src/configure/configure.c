@@ -7,9 +7,9 @@
 #include "config_utils/config_utils.h"
 #include "configure.h"
 
-int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
-        const char* proxy_name, const char* type_value, const char* ip_value, \
-        const char* local_port_value, const char* custom_domain) {
+int create_configuration_toml(const char* path, const char* server_url, const char* server_port,
+    const char* proxy_name, const char* type_value, const char* ip_value,
+    const char* local_port_value, const char* remote_port_value, const char* custom_domain) {
     // Write the configuration file in folder.
     FILE* file = fopen(path, "w");
     if (file == NULL) {
@@ -25,6 +25,7 @@ int create_configuration_toml(const char* path, const char* server_url, const ch
     fprintf(file, PROXY_NAME "\"%s\"\n", proxy_name);
     fprintf(file, PROXY_TYPE "\"%s\"\n", type_value);
     fprintf(file, PROXY_LOCAL_PORT "%s\n", local_port_value);
+    fprintf(file, PROXY_REMOTE_PORT "%s\n", local_port_value);
     fprintf(file, PROXY_LOCAL_IP "\"%s\"\n", ip_value);
     fprintf(file, PROXY_CUSTOM_DOMAIN "[\"%s\"]\n", custom_domain);
     
@@ -44,6 +45,7 @@ int configure_frp_client(char* username, int interactive) {
     // char frps_token[SIMPLE_CHAR_SIZE];
     char ip_value[SIMPLE_CHAR_SIZE];
     char local_port_value[SIMPLE_CHAR_SIZE];
+    char remote_port_value[SIMPLE_CHAR_SIZE];
     char custom_domain[SIMPLE_CHAR_SIZE];
     char default_proxy_name[SIMPLE_CHAR_SIZE];
     char client_toml[SIMPLE_CHAR_SIZE];
@@ -102,12 +104,7 @@ int configure_frp_client(char* username, int interactive) {
     // if (output != 0) {
     //     return 1;
     // }
-
     // // Generate a user hash for the custom domain
-    // output = md5_hash(username, &custom_domain_hash);
-    // 
-    // if (output != 0) {
-    //     fprintf(stderr, "Error while generating the custom domain hash.\n");
     //     return 1;
     // }
     // 
@@ -120,7 +117,7 @@ int configure_frp_client(char* username, int interactive) {
     strncat(client_toml, "_client.toml", SIMPLE_CHAR_SIZE - strlen(client_toml));
 
     output = create_configuration_toml(client_toml, server_url, server_port, name_value, \
-            type_value, ip_value, local_port_value, custom_domain);
+            type_value, ip_value, local_port_value, remote_port_value, custom_domain);
     if (output == 0){
         // Print configuration
         printf("\nConfiguration completed! Your local application can be accessed \

@@ -1,9 +1,0 @@
-[[module]]
-module = "append/append.wasm"
-route = "/append"
-volumes = {"/" = "."}
-
-[[module]]
-
-module = "quicksort/speed.wasm"
-route = "/quicksort"

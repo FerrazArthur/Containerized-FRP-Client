@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ -z "$LOCAL_WAGI_BIND_IP" ]; then
-    LOCAL_WAGI_BIND_IP="127.0.0.1"
+if [ -z "$LOCAL_SSHD_BIND_IP" ]; then
+    LOCAL_SSHD_BIND_IP="0.0.0.0"
 fi
 
-if [ -z "$LOCAL_WAGI_BIND_PORT" ]; then
-    LOCAL_WAGI_BIND_PORT="3000"
+if [ -z "$LOCAL_SSHD_BIND_PORT" ]; then
+    LOCAL_SSHD_BIND_PORT="22"
 fi
 
-wagi -c "modules.toml" -l "$LOCAL_WAGI_BIND_IP"":""$LOCAL_WAGI_BIND_PORT"
+/usr/sbin/sshd -D -e -o "ListenAddress $LOCAL_SSHD_BIND_IP" -o "Port $LOCAL_SSHD_BIND_PORT"

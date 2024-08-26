@@ -39,6 +39,10 @@
 #define PROXY_LOCAL_PORT_ENV "PROXY_LOCAL_PORT"
 #define DEFAULT_PROXY_LOCAL_PORT "3000"
 
+#define PROXY_REMOTE_PORT "remotePort = "
+#define PROXY_REMOTE_PORT_ENV "PROXY_REMOTE_PORT"
+#define DEFAULT_PROXY_REMOTE_PORT "6000"
+
 #define PROXY_CUSTOM_DOMAIN "customDomains = "
 #define PROXY_CUSTOM_DOMAIN_ENV "CUSTOM_APP_URL"
 #define DEFAULT_PROXY_CUSTOM_DOMAIN "my-app.test"
@@ -71,9 +75,9 @@
  * can be used to configure the frp client.
  */
 
-int create_configuration_toml(const char* path, const char* server_url, const char* server_port, \
-        const char* proxy_name, const char* type_value, const char* ip_value, \
-        const char* local_port_value, const char* custom_domain);
+int create_configuration_toml(const char* path, const char* server_url, const char* server_port,
+        const char* proxy_name, const char* type_value, const char* ip_value,
+        const char* local_port_value, const char* remote_port_value, const char* custom_domain);
 
 /**
  * @brief Configure an frp client for a user.

@@ -30,7 +30,7 @@ RUN make && mv my-frpc /frp/
 FROM alpine:"$ALPINE_VERSION"
 
 # Debug tools
-RUN apk add --no-cache curl bind-tools
+RUN apk add --no-cache curl bind-tools openssh
 
 RUN apk add --no-cache libldap libressl-dev && addgroup -S -g 10001 frp_group && adduser -SH -u 10001 -G frp_group frp_client
 
