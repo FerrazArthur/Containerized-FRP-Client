@@ -116,7 +116,7 @@ void remove_extension_from_string(char* name, char* extension) {
 }
 
 int process_arg(char* arg, int *interactive) {
-    const char *message = "Uso: quant1_frpc [OPÇÕES]\n"
+    const char *message = "Uso: my_frpc [OPÇÕES]\n"
     "Autentica o usuário, configura um cliente de proxy reverso rápido e o inicia.\n\n"
     "Opções:\n"
     "  --help, -h          Exibe esta mensagem de ajuda\n"
