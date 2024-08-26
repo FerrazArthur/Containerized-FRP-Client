@@ -1,0 +1,30 @@
+FROM alpine:3.20.2
+
+# Install OpenSSH
+RUN apk --no-cache add openssh
+
+# Create the necessary directory for sshd
+RUN mkdir /run/sshd
+
+# Generate SSH host keys
+RUN ssh-keygen -A
+
+# Add a user for SSH access
+RUN adduser -D -s /bin/ash user && echo "user:password" | chpasswd
+
+# Allow root login via SSH (optional, not recommended for production)
+RUN echo "AllowTcpForwarding yes" > /etc/ssh/sshd_config
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+RUN echo "X11Forwarding yes" >> /etc/ssh/sshd_config
+RUN echo "Subsystem       sftp    internal-sftp" >> /etc/ssh/sshd_config
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+RUN echo "LogLevel DEBUG3" >> /etc/ssh/sshd_config
+
+COPY application/entrypoint.sh /
+
+# Expose port 22 for SSH
+# EXPOSE  22
+
+CMD [ "/bin/sh", "./entrypoint.sh" ]
+
