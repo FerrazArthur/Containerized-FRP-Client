@@ -1,4 +1,1 @@
 bindPort = 7000
-
-vhostHTTPPort = 8080
-vhostHTTPSPort = 443
