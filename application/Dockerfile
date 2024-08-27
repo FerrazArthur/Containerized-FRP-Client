@@ -38,7 +38,7 @@ RUN printf "deb http://security.ubuntu.com/ubuntu focal-security main" | cat > /
 
 # Add dependencies for wagi (they are downgraded)
 RUN apt-get update \
-    && apt-get install -y --allow-downgrades openssl=1.1.1f-1ubuntu2.21 \
+    && apt-get install -y --allow-downgrades openssl=1.1.1f-1ubuntu2.23 \
     && ldconfig \
     && apt-get clean \
     && apt-get auto-remove -y \

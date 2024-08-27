@@ -123,7 +123,7 @@ services:
 
   # Server that provides some application via http
   wagi-server:
-    image: wagi
+    # image: wagi
     build:
       context: .
       dockerfile: application/Dockerfile
