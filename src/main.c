@@ -36,6 +36,7 @@ int main(int argc, char* argv[]) {
             FRPS_HOST_PORT_ENV);
 
     if (output != 0) {
+        fprintf(stderr, "Error opening %s.", SERVER_CONFIG_PATH);
         exit(EXIT_FAILURE);
     }
 

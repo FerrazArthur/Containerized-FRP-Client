@@ -87,7 +87,7 @@ void remove_extension_from_string(char* name, char* extension);
  * @param interactive (int*): A pointer to an integer variable to indicate interactive mode.
  *
  * @return
- *   - 0: Indicates successful processing and that the program should run interactively.
+ *   - 0: Indicates successful processing.
  *   - 1: Indicates an unknown argument error.
  *   - 2: Indicates that the help message was displayed, and the program should exit.
  */
@@ -101,7 +101,7 @@ int process_arg(char* arg, int *interactive);
  * @param interactive (int*): A pointer to an integer variable to indicate interactive mode.
  *
  * @return
- *   - 0: Indicates successful processing and that the program should run interactively.
+ *   - 0: Indicates successful processing.
  *   - 1: Indicates an unknown argument error.
  *   - 2: Indicates that the help message was displayed, and the program should exit.
  */

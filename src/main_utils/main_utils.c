@@ -12,6 +12,8 @@ int read_server_configuration(const char* path, const char* server_addr_env, con
     char *token = NULL;
     FILE *server_file = fopen(path, "r");
     if (server_file == NULL) {
+        // fprintf(stderr, "Error opening %s: File not found. Configuration will \
+proceed with default value for server's ip and port\n", path);
         fprintf(stderr, "Error opening %s\n", path);
         return 1;
     }
