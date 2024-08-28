@@ -1,1 +1,7 @@
 bindPort = 7000
+auth.method = "token"
+auth.token = "18290199848887079847627382062762528769762459760820946946054785699"
+
+allowPorts = [
+  { single = 6000 }
+]

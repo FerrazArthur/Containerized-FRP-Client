@@ -1,6 +1,6 @@
 ARG ALPINE_VERSION=3.18.4
 
-ARG FRP_VERSION=0.52.3
+ARG FRP_VERSION=0.60.0
 
 # First step: install frp
 FROM alpine:"$ALPINE_VERSION" AS installer
@@ -38,6 +38,5 @@ USER frp_client
 
 ENTRYPOINT [ "sh" ]
 
-# start with infine loop wait
 CMD ["-c", "frpc -c frpc.toml"]
 

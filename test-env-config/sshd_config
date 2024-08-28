@@ -1,0 +1,5 @@
+AllowTcpForwarding yes
+X11Forwarding yes
+Subsystem       sftp    internal-sftp
+PermitRootLogin yes
+PasswordAuthentication yes

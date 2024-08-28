@@ -1,0 +1,15 @@
+serverAddr = "nginx-server"
+serverPort = 7000
+
+transport.protocol = "tcp"
+
+auth.method = "token"
+auth.token = "18290199848887079847627382062762528769762459760820946946054785699"
+
+[[proxies]]
+transport.useEncryption = true
+name = "ssh"
+type = "tcp"
+localIP = "sshd-server"
+localPort = 3000
+remotePort = 6000
